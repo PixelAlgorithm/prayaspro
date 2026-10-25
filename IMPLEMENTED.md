@@ -139,10 +139,9 @@ The database contains realistic, consistent academic data:
 
 ## 8. Commands to Demonstrate to Evaluators
 
-Run these commands inside `d:\PESU\DBMS\Prayaspro\backend`:
-
+### Backend Tests (in `Prayaspro/backend`):
 ```bash
-# 1. Run the Complete 14-Step Lifecycle Demo Flow (Proves end-to-end functionality)
+# 1. Run the Complete 14-Step Lifecycle Demo Flow (Proves end-to-end functionality & ACID)
 npm run test:flow
 
 # 2. Run the Academic SQL Query Suite (JOINs, GROUP BY, HAVING, Subqueries, Window Functions, Vector search)
@@ -151,6 +150,35 @@ npm run test:queries
 # 3. Test Database Reset & Migration Reproducibility
 npm run db:reset
 
-# 4. Start the Backend API Server
+# 4. Start the Backend API Server (Port 5000)
 npm run dev
 ```
+
+### Frontend Web Application (in `Prayaspro/frontend`):
+```bash
+# Start the Next.js Frontend (Port 3000)
+npm run dev
+```
+
+---
+
+## 9. Frontend Interactive Viva Routes (`http://localhost:3000`)
+
+| Route | Feature Demonstrated | Evaluator Talking Point |
+|---|---|---|
+| `/` | Landing page | Live SSR metrics directly queried from PostgreSQL database view. |
+| `/tasks` | Task Directory | Multi-filtering by category, status, and budget range. |
+| `/tasks/[id]` | Task Details & Proposals | Shows task specifications, applicant proposals, and ACID application acceptance. |
+| `/tasks/create` | Post Micro-Task | Automatically computes and registers a 384-dimensional vector embedding. |
+| `/assignments/[id]` | Interactive Contract Workspace | 4-step contract lifecycle: Assigned $\to$ In Progress $\to$ Deliverable Submitted $\to$ Approved & Paid $\to$ 5-Star Review. |
+| `/dashboard` | Student Profile & Skills | Competency manager with live calculations from `fn_calculate_student_rating` & `fn_calculate_student_earnings`. |
+| `/recommendations` | pgvector Cosine Search | Real-time semantic matching explorer displaying `<=>` cosine distance and active SQL queries. |
+| `/admin` | Supervisor Console | Platform metrics, user active toggles, and payment audit ledger (`view_student_earnings_ledger`). |
+| `/db-showcase` | DBMS Viva Console | Interactive academic benchmark runner with live `EXPLAIN (ANALYZE, BUFFERS)` execution profiler. |
+
+### 1-Click Quick Demo Personas (Top Bar):
+* **Aarav Sharma** (`aarav@pesu.edu`): Task Poster (PESU)
+* **Ananya Rao** (`ananya@bmsce.edu`): 5-Star Freelancer & Designer (BMSCE)
+* **Priya Nair** (`priya@pesu.edu`): AI & ML Student Specialist (PESU)
+* **Admin Supervisor** (`admin@prayaspro.edu`): Platform Supervisor (Audit & Views)
+

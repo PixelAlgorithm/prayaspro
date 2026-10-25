@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, optionalAuthenticate, AuthenticatedRequest } from '../middleware/auth';
-import { createTask, getTaskById, listTasks, cancelTask } from '../services/taskService';
+import { createTask, getTaskById, listTasks, cancelTask, deleteTask } from '../services/taskService';
 
 const router = Router();
 
@@ -41,7 +41,12 @@ router.get('/my/posted', authenticate, async (req: AuthenticatedRequest, res) =>
 // Create new task
 router.post('/', authenticate, async (req: AuthenticatedRequest, res) => {
   try {
-    const { categoryId, title, description, requiredSkills, budget, deadline } = req.body;
+    const categoryId = req.body.categoryId || req.body.category_id;
+    const title = req.body.title;
+    const description = req.body.description;
+    const requiredSkills = req.body.requiredSkills || req.body.required_skills || '';
+    const budget = req.body.budget;
+    const deadline = req.body.deadline;
     
     if (!categoryId || !title || !description || !budget || !deadline) {
       return res.status(400).json({ 
@@ -54,7 +59,7 @@ router.post('/', authenticate, async (req: AuthenticatedRequest, res) => {
       categoryId,
       title,
       description,
-      requiredSkills: requiredSkills || '',
+      requiredSkills,
       budget: Number(budget),
       deadline
     });
@@ -84,6 +89,17 @@ router.put('/:id/cancel', authenticate, async (req: AuthenticatedRequest, res) =
     const isAdmin = req.user!.role === 'ADMIN';
     const task = await cancelTask(req.params.id as string, req.user!.userId, isAdmin);
     res.json(task);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Delete task (permanent removal by owner or admin)
+router.delete('/:id', authenticate, async (req: AuthenticatedRequest, res) => {
+  try {
+    const isAdmin = req.user!.role === 'ADMIN';
+    const result = await deleteTask(req.params.id as string, req.user!.userId, isAdmin);
+    res.json({ message: 'Task and all associated records deleted successfully.', task: result });
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }

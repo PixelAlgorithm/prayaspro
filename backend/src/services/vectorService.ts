@@ -91,10 +91,10 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 }
 
 /**
- * Format a number array as PostgreSQL vector literal format: '{0.1,0.2,...}'
+ * Format a number array as PostgreSQL vector literal format: '[0.1,0.2,...]'
  */
 export function toPgVector(embedding: number[]): string {
-  return `{${embedding.join(',')}}`;
+  return `[${embedding.join(',')}]`;
 }
 
 /**
@@ -175,7 +175,8 @@ export async function getRecommendedTasksForStudent(
       u.name AS owner_name,
       u.college AS owner_college,
       (ce.embedding <=> $1::vector) AS cosine_distance,
-      ROUND(((1.0 - (ce.embedding <=> $1::vector)) * 100)::numeric, 1) AS match_score_percentage
+      ROUND(((1.0 - (ce.embedding <=> $1::vector)) * 100)::numeric, 1) AS match_score_percentage,
+      ROUND(((1.0 - (ce.embedding <=> $1::vector)) * 100)::numeric, 1) AS match_percentage
     FROM tasks t
     JOIN categories c ON t.category_id = c.category_id
     JOIN users u ON t.owner_id = u.user_id
@@ -228,14 +229,27 @@ export async function getRecommendedStudentsForTask(
     SELECT 
       u.user_id,
       u.name,
+      u.name AS student_name,
       u.college,
       u.department,
       vsp.total_skills,
       vsp.completed_assignments,
       vsp.average_rating,
       vsp.total_reviews_received,
+      COALESCE(
+        (SELECT string_agg(sk.skill_name, ', ') 
+         FROM (
+           SELECT sk2.skill_name 
+           FROM student_skills ss 
+           JOIN skills sk2 ON ss.skill_id = sk2.skill_id 
+           WHERE ss.user_id = u.user_id 
+           LIMIT 3
+         ) sk), 
+        'Technical Skills'
+      ) AS top_skills,
       (ce.embedding <=> $1::vector) AS cosine_distance,
-      ROUND(((1.0 - (ce.embedding <=> $1::vector)) * 100)::numeric, 1) AS match_score_percentage
+      ROUND(((1.0 - (ce.embedding <=> $1::vector)) * 100)::numeric, 1) AS match_score_percentage,
+      ROUND(((1.0 - (ce.embedding <=> $1::vector)) * 100)::numeric, 1) AS match_percentage
     FROM users u
     JOIN content_embeddings ce ON ce.entity_id = u.user_id AND ce.entity_type = 'STUDENT'
     LEFT JOIN view_student_performance vsp ON u.user_id = vsp.user_id

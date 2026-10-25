@@ -9,11 +9,13 @@
     "start": "node dist/server.js",
     "db:migrate": "tsx src/db/migrate.ts",
     "db:seed": "tsx src/db/seed.ts",
+    "db:synthetic": "tsx src/db/synthetic_seed.ts",
     "db:reset": "tsx src/db/reset.ts",
     "test:flow": "tsx src/tests/demo_flow.ts",
     "test:queries": "tsx src/tests/test_queries.ts"
   },
   "dependencies": {
+    "@esbuild/darwin-arm64": "^0.28.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, requireRole, AuthenticatedRequest } from '../middleware/auth';
-import { query } from '../db/connection';
+import { query, withTransaction } from '../db/connection';
 
 const router = Router();
 
@@ -55,6 +55,27 @@ router.put('/users/:id/toggle-active', async (req, res) => {
   }
 });
 
+router.put('/users/:id/status', async (req, res) => {
+  try {
+    const { is_active } = req.body;
+    let updated;
+    if (typeof is_active === 'boolean') {
+      updated = await query(
+        `UPDATE users SET is_active = $1 WHERE user_id = $2 RETURNING user_id, name, is_active`,
+        [is_active, req.params.id]
+      );
+    } else {
+      updated = await query(
+        `UPDATE users SET is_active = NOT is_active WHERE user_id = $1 RETURNING user_id, name, is_active`,
+        [req.params.id]
+      );
+    }
+    res.json(updated.rows[0]);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 router.get('/tasks', async (req, res) => {
   try {
     const tasks = await query(`
@@ -69,6 +90,34 @@ router.get('/tasks', async (req, res) => {
     res.json(tasks.rows);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin deletes a task and cleanly cascades child records
+router.delete('/tasks/:id', async (req, res) => {
+  try {
+    const taskId = req.params.id;
+    await withTransaction(async (client) => {
+      // 1. Delete content embeddings
+      await client.query(`DELETE FROM content_embeddings WHERE entity_id = $1::uuid AND entity_type = 'TASK'`, [taskId]);
+      // 2. Delete reviews
+      await client.query(`DELETE FROM reviews WHERE task_id = $1::uuid`, [taskId]);
+      // 3. Delete payments
+      await client.query(`DELETE FROM payments WHERE task_id = $1::uuid`, [taskId]);
+      // 4. Delete assignments
+      await client.query(`DELETE FROM assignments WHERE task_id = $1::uuid`, [taskId]);
+      // 5. Delete applications
+      await client.query(`DELETE FROM applications WHERE task_id = $1::uuid`, [taskId]);
+      // 6. Delete task itself
+      const result = await client.query(`DELETE FROM tasks WHERE task_id = $1::uuid RETURNING task_id, title`, [taskId]);
+      if (result.rowCount === 0) {
+        throw new Error('Task not found');
+      }
+    });
+
+    res.json({ message: 'Task and all associated records deleted successfully.' });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
   }
 });
 

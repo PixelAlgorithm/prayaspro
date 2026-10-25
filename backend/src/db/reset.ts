@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { runMigrations } from './migrate';
 import { seedDatabase } from './seed';
+import { populateSyntheticData } from './synthetic_seed';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -33,8 +34,10 @@ async function resetDatabase() {
   // Re-seed data
   console.log('\nRunning seed...');
   await seedDatabase();
+  console.log('\nRunning consistent synthetic seed...');
+  await populateSyntheticData();
 
-  console.log('\nDatabase reset and re-seeded successfully!');
+  console.log('\nDatabase reset and re-seeded successfully with full dataset!');
 }
 
 if (require.main === module) {

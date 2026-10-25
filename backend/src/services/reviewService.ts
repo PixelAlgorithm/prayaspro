@@ -22,10 +22,19 @@ export async function createReview(params: {
     throw new Error('Reviews can only be submitted for COMPLETED tasks.');
   }
 
-  // Insert review
+  if (reviewerId === reviewedUserId) {
+    throw new Error('You cannot review yourself.');
+  }
+
+  // Insert or update existing review for this task & reviewer
   const res = await query(
-    `INSERT INTO reviews (task_id, reviewer_id, reviewed_user_id, rating, comment)
-     VALUES ($1, $2, $3, $4, $5)
+    `INSERT INTO reviews (task_id, reviewer_id, reviewed_user_id, rating, comment, created_at)
+     VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)
+     ON CONFLICT (task_id, reviewer_id)
+     DO UPDATE SET 
+       rating = EXCLUDED.rating,
+       comment = EXCLUDED.comment,
+       created_at = CURRENT_TIMESTAMP
      RETURNING *`,
     [taskId, reviewerId, reviewedUserId, rating, comment || null]
   );

@@ -1,4 +1,4 @@
-import { query } from '../db/connection';
+import { query, withTransaction } from '../db/connection';
 import { upsertEmbedding } from './vectorService';
 
 export interface CreateTaskDTO {
@@ -29,8 +29,11 @@ export async function createTask(dto: CreateTaskDTO) {
     throw new Error('Budget must be greater than zero.');
   }
 
-  const deadlineDate = new Date(deadline);
-  if (isNaN(deadlineDate.getTime()) || deadlineDate <= new Date()) {
+  let deadlineDate = new Date(deadline);
+  if (typeof deadline === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(deadline.trim())) {
+    deadlineDate = new Date(`${deadline.trim()}T23:59:59.999Z`);
+  }
+  if (isNaN(deadlineDate.getTime()) || deadlineDate.getTime() < Date.now() - 60000) {
     throw new Error('Deadline must be a valid future date.');
   }
 
@@ -195,4 +198,35 @@ export async function cancelTask(taskId: string, userId: string, isAdmin = false
     [taskId]
   );
   return res.rows[0];
+}
+
+export async function deleteTask(taskId: string, userId: string, isAdmin = false) {
+  const task = await getTaskById(taskId);
+  if (!task) {
+    throw new Error('Task not found.');
+  }
+
+  if (!isAdmin && task.owner_id !== userId) {
+    throw new Error('Unauthorized to delete this task.');
+  }
+
+  if (task.status === 'COMPLETED') {
+    throw new Error('Cannot delete a completed task that has been paid out.');
+  }
+
+  return await withTransaction(async (client) => {
+    // 1. Delete content embeddings
+    await client.query(`DELETE FROM content_embeddings WHERE entity_id = $1::uuid AND entity_type = 'TASK'`, [taskId]);
+    // 2. Delete reviews
+    await client.query(`DELETE FROM reviews WHERE task_id = $1::uuid`, [taskId]);
+    // 3. Delete payments
+    await client.query(`DELETE FROM payments WHERE task_id = $1::uuid`, [taskId]);
+    // 4. Delete assignments
+    await client.query(`DELETE FROM assignments WHERE task_id = $1::uuid`, [taskId]);
+    // 5. Delete applications
+    await client.query(`DELETE FROM applications WHERE task_id = $1::uuid`, [taskId]);
+    // 6. Delete task itself
+    const res = await client.query(`DELETE FROM tasks WHERE task_id = $1::uuid RETURNING task_id, title`, [taskId]);
+    return res.rows[0];
+  });
 }
