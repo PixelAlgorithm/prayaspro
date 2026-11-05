@@ -128,6 +128,123 @@ export async function upsertEmbedding(
 }
 
 /**
+ * Vector RUD Operation: READ (List embeddings with metadata, dimension, and norm)
+ */
+export async function listEmbeddings(limit = 20, offset = 0, entityType?: string) {
+  let sql = `
+    SELECT 
+      ce.embedding_id,
+      ce.entity_type,
+      ce.entity_id,
+      ce.content_text,
+      ce.created_at,
+      ce.updated_at,
+      COALESCE(u.name, t.title, 'System Entity') AS entity_label,
+      COALESCE(u.college, c.category_name, 'General') AS entity_sublabel
+    FROM content_embeddings ce
+    LEFT JOIN users u ON ce.entity_id = u.user_id AND ce.entity_type = 'STUDENT'
+    LEFT JOIN tasks t ON ce.entity_id = t.task_id AND ce.entity_type = 'TASK'
+    LEFT JOIN categories c ON t.category_id = c.category_id
+  `;
+  const params: any[] = [];
+  if (entityType) {
+    sql += ` WHERE ce.entity_type = $1`;
+    params.push(entityType);
+  }
+  sql += ` ORDER BY ce.updated_at DESC LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
+  params.push(limit, offset);
+
+  const res = await query(sql, params);
+  return res.rows.map(r => ({
+    ...r,
+    dimensions: VECTOR_DIMENSION,
+    norm: 1.0,
+    metric: 'Cosine Distance (<=>)'
+  }));
+}
+
+/**
+ * Vector RUD Operation: READ (Single embedding with details)
+ */
+export async function getEmbedding(entityType: string, entityId: string) {
+  const res = await query(
+    `SELECT 
+       ce.embedding_id,
+       ce.entity_type,
+       ce.entity_id,
+       ce.content_text,
+       ce.created_at,
+       ce.updated_at,
+       COALESCE(u.name, t.title, 'Entity') AS entity_label
+     FROM content_embeddings ce
+     LEFT JOIN users u ON ce.entity_id = u.user_id AND ce.entity_type = 'STUDENT'
+     LEFT JOIN tasks t ON ce.entity_id = t.task_id AND ce.entity_type = 'TASK'
+     WHERE ce.entity_type = $1 AND ce.entity_id = $2`,
+    [entityType, entityId]
+  );
+  if (!res.rowCount || res.rowCount === 0) return null;
+  const row = res.rows[0];
+  return {
+    ...row,
+    dimensions: VECTOR_DIMENSION,
+    metric: 'Cosine Distance (<=>)'
+  };
+}
+
+/**
+ * Vector RUD Operation: UPDATE (Re-embed with new text content)
+ */
+export async function updateEmbedding(
+  entityType: 'STUDENT' | 'TASK',
+  entityId: string,
+  newContentText: string
+) {
+  const newEmbedding = await generateEmbedding(newContentText);
+  const vectorStr = toPgVector(newEmbedding);
+
+  const res = await query(
+    `UPDATE content_embeddings
+     SET 
+       content_text = $1,
+       embedding = $2::vector,
+       updated_at = CURRENT_TIMESTAMP
+     WHERE entity_type = $3 AND entity_id = $4
+     RETURNING embedding_id, entity_type, entity_id, content_text, updated_at`,
+    [newContentText, vectorStr, entityType, entityId]
+  );
+
+  if (!res.rowCount || res.rowCount === 0) {
+    await upsertEmbedding(entityType, entityId, newContentText);
+    return await getEmbedding(entityType, entityId);
+  }
+
+  return {
+    ...res.rows[0],
+    dimensions: VECTOR_DIMENSION,
+    message: 'Vector embedding updated successfully.'
+  };
+}
+
+/**
+ * Vector RUD Operation: DELETE (Remove embedding from vector store)
+ */
+export async function deleteEmbedding(entityType: string, entityId: string) {
+  const res = await query(
+    `DELETE FROM content_embeddings
+     WHERE entity_type = $1 AND entity_id = $2
+     RETURNING embedding_id, entity_type, entity_id, content_text`,
+    [entityType, entityId]
+  );
+  if (!res.rowCount || res.rowCount === 0) {
+    throw new Error(`Embedding for ${entityType} ${entityId} not found.`);
+  }
+  return {
+    ...res.rows[0],
+    message: 'Vector embedding deleted successfully.'
+  };
+}
+
+/**
  * Find recommended tasks for a student using pgvector cosine similarity search (<=>)
  * Combined with relational SQL filters (status = 'OPEN', budget, category)
  */

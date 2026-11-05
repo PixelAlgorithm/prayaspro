@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authenticate, optionalAuthenticate, AuthenticatedRequest } from '../middleware/auth';
 import { createTask, getTaskById, listTasks, cancelTask, deleteTask } from '../services/taskService';
+import { applyToTask, getTaskApplications } from '../services/applicationService';
 
 const router = Router();
 
@@ -65,6 +66,39 @@ router.post('/', authenticate, async (req: AuthenticatedRequest, res) => {
     });
 
     res.status(201).json(task);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Get applications for a task (alias)
+router.get('/:id/applications', authenticate, async (req: AuthenticatedRequest, res) => {
+  try {
+    const isAdmin = req.user!.role === 'ADMIN';
+    const applications = await getTaskApplications(req.params.id as string, req.user!.userId, isAdmin);
+    res.json(applications);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Apply to a task (alias)
+router.post('/:id/apply', authenticate, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { proposal, proposedAmount, proposed_amount } = req.body;
+    const amount = proposedAmount || proposed_amount;
+    if (!proposal || !amount) {
+      return res.status(400).json({ error: 'Proposal and proposedAmount are required.' });
+    }
+
+    const application = await applyToTask({
+      taskId: req.params.id as string,
+      studentId: req.user!.userId,
+      proposal,
+      proposedAmount: Number(amount)
+    });
+
+    res.status(201).json(application);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }

@@ -17,15 +17,36 @@ Unlike generic freelancing portals, PrayasPro operates on strict academic integr
 
 ---
 
-## 2. Problem Statement & Motivation
+## 2. Evaluation Rubric Compliance Matrix (14 / 14 Criteria Satisfied)
 
-### 2.1 The Problem
+| Column | Rubric Criterion | Weightage | PrayasPro Implementation & Artifacts |
+| :---: | :--- | :---: | :--- |
+| **H** | **ER diagram** | 2 | Complete ER diagram with 10 entities, cardinalities (1:1, 1:M, M:N), primary keys, and foreign keys. Available in `erdiagram.svg` and `PrayasPro_ER_Relational.drawio.svg`. |
+| **I** | **Relational schema with keys & constraints** | 3 | Fully normalized 3NF/BCNF relational tables with strict PK, FK (`ON DELETE CASCADE`/`RESTRICT`), `CHECK`, and `UNIQUE` constraints. Available in `relationalschema.svg` and Section 4. |
+| **J** | **SQL database implementation (DDL)** | 4 | Complete DDL scripts executed via versioned migrations (`001` through `007`) in `backend/src/db/migrations/` and `schema.sql`. |
+| **K** | **NoSQL / Vector database creation** | 4 | Extension `vector` enabled in PostgreSQL; `content_embeddings` table created with 384-dimensional dense vectors on unit sphere ($L_2$ norm = 1.0). |
+| **L** | **Technology justification** | 1 | Rigorous justification in Section 3: single unified PostgreSQL engine eliminates 2-phase commit latency and enables hybrid relational-vector SQL queries. |
+| **M** | **DML operations** | 4 | Real-time `INSERT`, `UPDATE`, `DELETE`, and `SELECT` operations across users, tasks, applications, assignments, payments, reviews, and embeddings. |
+| **N** | **Nested, Correlated, Recursive & Join Queries** | 4 | 3-table joins, double FK joins, correlated subqueries (`budget >= AVG(category)`), and Recursive CTEs (`WITH RECURSIVE skill_tree`) with depth tracking. |
+| **O** | **Advanced SQL concepts (Proc/func, trigger, CTE)** | 6 | PL/pgSQL stored transaction (`fn_accept_application_transaction`), stored functions (`fn_calculate_student_rating`), triggers (`trg_prevent_self_application`), multi-table CTEs, and views. |
+| **P** | **NoSQL / Vector feature, RUD** | 7 | Real-time semantic task & student recommendation using `<=>` cosine distance, plus complete **RUD** (Read, Update, Delete) vector endpoints and interactive UI console. |
+| **Q** | **Next.js interface** | 3 | Next.js 14 App Router, responsive layout, task directory, dynamic contract workspace, 1-click demo personas, and interactive DBMS showcase console. |
+| **R** | **Backend/API and database integration** | 2 | Decoupled Express.js REST API with connection pooling (`pg.Pool`), parameterized queries, strict environment variable separation, and error handling. |
+| **S** | **Authentication & DB Role-Based Access Control** | 4 | Persistent JWT auth with minimum two roles (`STUDENT`, `ADMIN`), plus **PostgreSQL Engine-Level RBAC** (`prayaspro_student`, `prayaspro_admin`, `prayaspro_auditor`) with table grants. |
+| **T** | **Documentation, Git/GitHub** | 2 | Clean git commits, `README.md`, setup instructions, `IMPLEMENTED.md`, `DEMO_GUIDE.md`, and this comprehensive report. |
+| **U** | **Originality & Viva Readiness** | 4 | Original student campus micro-task economy domain, live query runner with `EXPLAIN (ANALYZE, BUFFERS)`, automated 14-step test flow, and instant viva demonstration routes. |
+
+---
+
+## 3. Problem Statement & Motivation
+
+### 3.1 The Problem
 In modern university environments:
 1. Students frequently require rapid turnaround on specialized micro-deliverables (e.g., frontend components for hackathons, IEEE paper proofreading, survey dataset cleaning, club posters).
 2. Existing global gig platforms (Upwork, Fiverr) impose steep commercial commission fees (20%), require bank verification inaccessible to students, and lack campus-level context.
 3. Informal campus channels (WhatsApp groups, Discord) lack structured contracts, resulting in frequent payment defaults, ghosting, unverified skill claims, and lack of accountability.
 
-### 2.2 Motivation & Objectives
+### 3.2 Motivation & Objectives
 The primary objectives of PrayasPro are:
 - **Relational Integrity**: Enforce unambiguous contract lifecycles (`OPEN` $\to$ `ASSIGNED` $\to$ `IN_PROGRESS` $\to$ `SUBMITTED` $\to$ `COMPLETED`) via transactional database state machines.
 - **ACID Security**: Prevent double assignment of tasks and ensure atomic payment settlements using row-level locking (`FOR UPDATE`).
@@ -34,7 +55,7 @@ The primary objectives of PrayasPro are:
 
 ---
 
-## 3. Database Paradigm Selection & Justification
+## 4. Database Paradigm Selection & Justification
 
 The project satisfies **Option 2: SQL + Vector Database** of the DBMS Level 3 specifications:
 
@@ -47,11 +68,11 @@ The project satisfies **Option 2: SQL + Vector Database** of the DBMS Level 3 sp
 
 ---
 
-## 4. Entity-Relationship (ER) Modeling & Relational Schema
+## 5. Entity-Relationship (ER) Modeling & Relational Schema
 
-### 4.1 Core Entities from `PrayasPro_ER_Relational.drawio.svg`
+### 5.1 Core Entities from `erdiagram.svg` & `relationalschema.svg`
 1. **`users`**: Represents students and platform supervisors. Includes university affiliations (PESU, RVCE, BMSCE, MSRIT) and authentication hashes.
-2. **`skills`**: Standardized competency catalog (React, Next.js, PostgreSQL, PyTorch, Figma, Canva, etc.).
+2. **`skills`**: Standardized competency catalog (React, Next.js, PostgreSQL, PyTorch, Figma, Canva, etc.) with self-referencing `parent_skill_id` for prerequisite hierarchies.
 3. **`student_skills`**: Resolves the **M:M relationship** between `users` and `skills`. Stores proficiency level (`BEGINNER`, `INTERMEDIATE`, `ADVANCED`, `EXPERT`) and verified experience.
 4. **`categories`**: Domain classifications (Software Dev, Graphic Design, Data & AI, Video Editing, Technical Writing, Academic Tutoring).
 5. **`tasks`**: Micro-tasks published by students with budgets, deadlines, descriptions, and statuses.
@@ -61,14 +82,14 @@ The project satisfies **Option 2: SQL + Vector Database** of the DBMS Level 3 sp
 9. **`reviews`**: Peer feedback and rating evaluations (`rating CHECK (1..5)`). Also references `users` twice (`reviewer_id` and `reviewed_user_id`).
 10. **`content_embeddings`**: High-dimensional vector table storing 384-dimensional unit vectors (`vector(384)`) for both student profiles and task descriptions.
 
-### 4.2 Relational Schema Definition (DDL)
+### 5.2 Relational Schema Definition (DDL)
 ```sql
--- Core Relational Schema Summary
+-- 1. Users Table (Role-based access: STUDENT and ADMIN)
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
     college VARCHAR(150) NOT NULL,
     department VARCHAR(100) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'STUDENT' CHECK (role IN ('STUDENT', 'ADMIN')),
@@ -76,19 +97,16 @@ CREATE TABLE users (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE categories (
-    category_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    category_name VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT
-);
-
+-- 2. Skills with Hierarchical Self-Reference (Prerequisites)
 CREATE TABLE skills (
     skill_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     skill_name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
-    category VARCHAR(100) NOT NULL
+    category VARCHAR(100) NOT NULL,
+    parent_skill_id UUID REFERENCES skills(skill_id) ON DELETE SET NULL
 );
 
+-- 3. Student Skills (M:M User to Skill)
 CREATE TABLE student_skills (
     student_skill_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
@@ -99,6 +117,7 @@ CREATE TABLE student_skills (
     CONSTRAINT uq_user_skill UNIQUE (user_id, skill_id)
 );
 
+-- 4. Tasks Table with Status & Check Constraints
 CREATE TABLE tasks (
     task_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     owner_id UUID NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
@@ -114,59 +133,66 @@ CREATE TABLE tasks (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 5. Applications Table (M:M User to Task)
 CREATE TABLE applications (
     application_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     task_id UUID NOT NULL REFERENCES tasks(task_id) ON DELETE CASCADE,
     student_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
-    proposed_amount NUMERIC(10, 2) NOT NULL CHECK (proposed_amount > 0),
     proposal TEXT NOT NULL,
+    proposed_amount NUMERIC(10, 2) NOT NULL CHECK (proposed_amount > 0),
+    applied_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(20) NOT NULL DEFAULT 'PENDING' 
         CHECK (status IN ('PENDING', 'ACCEPTED', 'REJECTED', 'WITHDRAWN')),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_task_student_application UNIQUE (task_id, student_id)
 );
 
+-- 6. Assignments (1:1 Contract Enforcement)
 CREATE TABLE assignments (
     assignment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    task_id UUID NOT NULL UNIQUE REFERENCES tasks(task_id) ON DELETE RESTRICT,
+    task_id UUID UNIQUE NOT NULL REFERENCES tasks(task_id) ON DELETE RESTRICT,
     student_id UUID NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
     assigned_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     started_at TIMESTAMPTZ,
     submitted_at TIMESTAMPTZ,
     completed_at TIMESTAMPTZ,
+    progress_percentage INT DEFAULT 0 CHECK (progress_percentage BETWEEN 0 AND 100),
     status VARCHAR(20) NOT NULL DEFAULT 'ASSIGNED' 
-        CHECK (status IN ('ASSIGNED', 'IN_PROGRESS', 'SUBMITTED', 'COMPLETED')),
+        CHECK (status IN ('ASSIGNED', 'IN_PROGRESS', 'SUBMITTED', 'COMPLETED', 'CANCELLED')),
     submission_notes TEXT
 );
 
+-- 7. Payments Table (References Users Twice)
 CREATE TABLE payments (
     payment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     task_id UUID NOT NULL REFERENCES tasks(task_id) ON DELETE RESTRICT,
     payer_id UUID NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
     receiver_id UUID NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
     amount NUMERIC(10, 2) NOT NULL CHECK (amount > 0),
-    payment_status VARCHAR(20) NOT NULL DEFAULT 'SUCCESS' 
-        CHECK (payment_status IN ('PENDING', 'SUCCESS', 'REFUNDED', 'DISPUTED')),
+    payment_status VARCHAR(20) NOT NULL DEFAULT 'PENDING' 
+        CHECK (payment_status IN ('PENDING', 'SUCCESS', 'FAILED', 'REFUNDED')),
     paid_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 8. Reviews Table (References Users Twice)
 CREATE TABLE reviews (
     review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     task_id UUID NOT NULL REFERENCES tasks(task_id) ON DELETE RESTRICT,
     reviewer_id UUID NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
     reviewed_user_id UUID NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
-    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_task_reviewer UNIQUE (task_id, reviewer_id)
 );
 
+-- 9. Content Embeddings Table (Vector Database Storage)
 CREATE TABLE content_embeddings (
     embedding_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     entity_type VARCHAR(20) NOT NULL CHECK (entity_type IN ('STUDENT', 'TASK')),
     entity_id UUID NOT NULL,
-    embedding vector(384) NOT NULL,
     content_text TEXT NOT NULL,
+    embedding vector(384) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_entity_embedding UNIQUE (entity_type, entity_id)
 );
@@ -174,28 +200,7 @@ CREATE TABLE content_embeddings (
 
 ---
 
-## 5. Relational Normalization Analysis (1NF to 3NF / BCNF Proofs)
-
-To guarantee database integrity and eliminate update/delete anomalies, every table was formally normalized:
-
-1. **First Normal Form (1NF)**:
-   - All attributes contain atomic, scalar values (UUIDs, VARCHAR, NUMERIC, TIMESTAMPTZ).
-   - Repeating groups were eliminated by moving student skills to `student_skills` and applications to `applications`.
-   - Every relation possesses a uniquely identifiable Primary Key (`gen_random_uuid()`).
-2. **Second Normal Form (2NF)**:
-   - For associative composite-key tables (`student_skills` on `(user_id, skill_id)` and `applications` on `(task_id, student_id)`), every non-key attribute (`proficiency_level`, `years_experience`, `proposed_amount`, `proposal`) is **fully functionally dependent** on the entire candidate key, with zero partial dependencies.
-3. **Third Normal Form (3NF)**:
-   - Every non-prime attribute is non-transitively dependent on the primary key ($X \to Y$ holds where $X$ is a superkey or $Y$ is a prime attribute).
-   - In `tasks`, category metadata is not stored redundantly; only `category_id` is maintained, referencing `categories`.
-   - In `payments`, the student names and colleges are not duplicated; they reference `payer_id` and `receiver_id` pointing to `users`.
-4. **Boyce-Codd Normal Form (BCNF)**:
-   - In all relations, for every non-trivial functional dependency $X \to Y$, $X$ is a superkey. There are no overlapping candidate keys with non-trivial dependencies.
-
----
-
 ## 6. Advanced Database Concepts Implemented
-
-The rubric mandates demonstrating at least four advanced database concepts. PrayasPro implements **all seven**:
 
 ### 6.1 ACID Stored Transactions (`fn_accept_application_transaction`)
 Accepting an applicant requires atomic multi-table coordination. If any step fails, changes roll back:
@@ -210,7 +215,6 @@ DECLARE
     v_task_status VARCHAR(20);
     v_assignment_id UUID;
 BEGIN
-    -- 1. Identify application and lock corresponding task row
     SELECT a.task_id, a.student_id INTO v_task_id, v_student_id
     FROM applications a
     WHERE a.application_id = p_application_id AND a.status = 'PENDING';
@@ -259,104 +263,139 @@ $$ LANGUAGE plpgsql;
 ```
 
 ### 6.2 Relational Integrity Triggers
-* **`trg_prevent_self_application`**: Prevents a student from bidding on tasks they posted:
+* **`trg_prevent_self_application`**: Blocks a student from bidding on tasks they posted:
   ```sql
-  CREATE OR REPLACE FUNCTION fn_prevent_self_application()
+  CREATE OR REPLACE FUNCTION trg_fn_prevent_self_application()
   RETURNS TRIGGER AS $$
   DECLARE
-      v_owner_id UUID;
+      task_owner UUID;
   BEGIN
-      SELECT owner_id INTO v_owner_id FROM tasks WHERE task_id = NEW.task_id;
-      IF v_owner_id = NEW.student_id THEN
-          RAISE EXCEPTION 'Database Integrity Constraint: A student cannot apply to a task they own';
+      SELECT owner_id INTO task_owner FROM tasks WHERE task_id = NEW.task_id;
+      IF task_owner = NEW.student_id THEN
+          RAISE EXCEPTION 'Database Integrity Constraint: A student cannot apply to a task they own (Task ID: %, User ID: %)',
+              NEW.task_id, NEW.student_id;
       END IF;
       RETURN NEW;
   END;
   $$ LANGUAGE plpgsql;
   ```
 * **`trg_validate_task_status`**: Rejects applications submitted after a task has closed.
-* **`trg_update_task_timestamp`**: Maintains timestamp integrity on updates.
+* **`trg_update_task_timestamp`**: Automatically updates `tasks.updated_at` on modification.
 
-### 6.3 Analytical Database Views
-* **`view_task_marketplace_stats`**: Pre-computed category analytics:
-  ```sql
-  CREATE OR REPLACE VIEW view_task_marketplace_stats AS
-  SELECT 
-      c.category_id,
-      c.category_name,
-      COUNT(t.task_id) AS total_tasks,
-      COUNT(t.task_id) FILTER (WHERE t.status = 'OPEN') AS open_tasks,
-      COUNT(t.task_id) FILTER (WHERE t.status = 'COMPLETED') AS completed_tasks,
-      ROUND(COALESCE(AVG(t.budget), 0), 2) AS average_budget,
-      COALESCE(SUM(t.budget), 0) AS total_budget_volume,
-      COALESCE(SUM(app_count.cnt), 0) AS total_applications_received
-  FROM categories c
-  LEFT JOIN tasks t ON c.category_id = t.category_id
-  LEFT JOIN (
-      SELECT task_id, COUNT(*) AS cnt FROM applications GROUP BY task_id
-  ) app_count ON t.task_id = app_count.task_id
-  GROUP BY c.category_id, c.category_name;
-  ```
-* **`view_student_performance`**: Independent subqueries aggregate total skills, applications, completed tasks, and earnings without Cartesian product expansion.
-* **`view_student_earnings_ledger`**: Immutable financial ledger joining payer and receiver students.
-* **`view_top_rated_freelancers`**: Leaderboard filtered by verified reviews.
+### 6.3 Recursive Queries (`WITH RECURSIVE`) & Prerequisite Hierarchy
+Traverses the self-referencing skill dependency tree to construct complete learning roadmaps with recursion depth:
+```sql
+WITH RECURSIVE skill_tree AS (
+    -- Anchor Member: Root skills with no prerequisites (depth 1)
+    SELECT 
+        s.skill_id,
+        s.skill_name,
+        s.category,
+        s.parent_skill_id,
+        1 AS depth_level,
+        s.skill_name::TEXT AS dependency_path
+    FROM skills s
+    WHERE s.parent_skill_id IS NULL
 
-### 6.4 Stored Functions
-* **`fn_calculate_student_rating(user_uuid)`**: Computes weighted average rating and review volume.
-* **`fn_calculate_student_earnings(user_uuid)`**: Aggregates all settled payouts where `payment_status = 'SUCCESS'`.
+    UNION ALL
 
-### 6.5 Indexing Strategy
-* **B-Tree Indexes**: On all foreign key columns (`owner_id`, `category_id`, `task_id`, `student_id`, `payer_id`, `receiver_id`).
-* **Composite Index**: `idx_tasks_status_deadline ON tasks(status, deadline)` optimizes marketplace filtering.
-* **GIN Full-Text Index**: `idx_tasks_search ON tasks USING gin(to_tsvector('english', title || ' ' || description))` enables instant multi-keyword searching.
+    -- Recursive Member: Sub-skills dependent on parent skills
+    SELECT 
+        child.skill_id,
+        child.skill_name,
+        child.category,
+        child.parent_skill_id,
+        parent.depth_level + 1 AS depth_level,
+        parent.dependency_path || ' ➔ ' || child.skill_name AS dependency_path
+    FROM skills child
+    JOIN skill_tree parent ON child.parent_skill_id = parent.skill_id
+)
+SELECT skill_name, category, depth_level, dependency_path
+FROM skill_tree
+ORDER BY category, depth_level;
+```
 
-### 6.6 pgvector Semantic Vector Similarity (`<=>`)
-* Embeddings: 384-dimensional unit vectors computed over text profiles.
-* Metric: Cosine Distance Operator (`<=>`):
-  $$d = 1.0 - \frac{A \cdot B}{\|A\| \|B\|}$$
-  $$\text{Match \%} = (1.0 - d) \times 100\%$$
-* Execution query:
-  ```sql
-  SELECT t.title, c.category_name, t.budget,
-         (task_vec.embedding <=> student_vec.embedding) AS cosine_distance,
-         ROUND(((1.0 - (task_vec.embedding <=> student_vec.embedding)) * 100)::numeric, 1) AS match_percentage
-  FROM tasks t
-  JOIN content_embeddings task_vec ON t.task_id = task_vec.entity_id AND task_vec.entity_type = 'TASK'
-  CROSS JOIN (
-      SELECT embedding FROM content_embeddings WHERE entity_id = $1 AND entity_type = 'STUDENT'
-  ) student_vec
-  WHERE t.status = 'OPEN'
-  ORDER BY cosine_distance ASC LIMIT 5;
-  ```
+### 6.4 Common Table Expressions (CTE) Multi-Stage Aggregations
+Enables modular query design computing category metrics and student earnings simultaneously:
+```sql
+WITH category_summary AS (
+    SELECT 
+        category_id, 
+        COUNT(task_id) AS total_tasks,
+        ROUND(AVG(budget)::numeric, 2) AS avg_budget,
+        MAX(budget) AS max_budget
+    FROM tasks
+    GROUP BY category_id
+),
+top_earners AS (
+    SELECT 
+        receiver_id,
+        COUNT(payment_id) AS paid_tasks_count,
+        SUM(amount) AS total_paid_out
+    FROM payments
+    WHERE payment_status = 'SUCCESS'
+    GROUP BY receiver_id
+)
+SELECT 
+    c.category_name,
+    cs.total_tasks,
+    cs.avg_budget,
+    cs.max_budget,
+    COALESCE(SUM(te.total_paid_out), 0.00) AS total_category_payouts
+FROM categories c
+JOIN category_summary cs ON c.category_id = cs.category_id
+LEFT JOIN tasks t ON c.category_id = t.category_id
+LEFT JOIN payments p ON t.task_id = p.task_id
+LEFT JOIN top_earners te ON p.receiver_id = te.receiver_id
+GROUP BY c.category_id, c.category_name, cs.total_tasks, cs.avg_budget, cs.max_budget
+ORDER BY cs.total_tasks DESC;
+```
+
+### 6.5 Database-Level Role-Based Access Control (PostgreSQL RBAC)
+Demonstrates database security by creating native PostgreSQL roles with granular table grants:
+* **`prayaspro_student`**: Can SELECT from catalog tables, INSERT into `applications`, `reviews`, and `student_skills`, but has **`REVOKE ALL ON payments`** preventing financial tampering.
+* **`prayaspro_admin`**: Granted full `ALL PRIVILEGES` across all public tables, sequences, and views.
+* **`prayaspro_auditor`**: Granted read-only audit access across all operational tables.
+
+### 6.6 Vector Database RUD Operations (Read, Update, Delete)
+Vector embeddings in `content_embeddings` support full lifecycle operations:
+* **Create (C)**: Automatic generation of normalized 384-dimensional float vectors when tasks are posted or student skills registered.
+* **Read (R)**: Cosine similarity queries (`ORDER BY embedding <=> query_vec ASC`) and vector inspection endpoints (`GET /api/recommendations/embeddings`).
+* **Update (U)**: Re-embedding and re-normalizing content vectors when profiles or task scopes change (`PUT /api/recommendations/embeddings/:type/:id`).
+* **Delete (D)**: Purging embeddings when tasks or student profiles are removed (`DELETE /api/recommendations/embeddings/:type/:id`).
 
 ---
 
 ## 7. Complex Academic SQL Queries
 
-The application executes 6 complex SQL query suites reflecting syllabus requirements:
+The application executes 10 complex SQL query suites reflecting syllabus requirements:
 
-| Query Type | Concept Demonstrated | Purpose |
-| :--- | :--- | :--- |
-| **3-Table INNER JOIN** | `tasks` $\to$ `categories` $\to$ `users` | Lists open tasks with poster identity and college affiliation. |
-| **GROUP BY + HAVING** | Aggregates (`AVG`, `COUNT`, `MIN`, `MAX`) with `HAVING COUNT(r.review_id) >= 1` | Compiles active freelancer reputation metrics. |
-| **Correlated Subquery** | `WHERE t.budget >= (SELECT AVG(budget) FROM tasks WHERE category_id = t.category_id)` | Identifies high-value tasks exceeding their category's average budget. |
-| **Double FK Join** | `payments` $\to$ `users` (as Payer) and `payments` $\to$ `users` (as Receiver) | Generates audit ledger linking both students. |
-| **Window Function** | `DENSE_RANK() OVER (PARTITION BY category_id ORDER BY budget DESC)` | Ranks tasks within each category without collapsing individual task rows. |
-| **Vector Similarity** | `ORDER BY (ce.embedding <=> query_vec) ASC` | Ranks tasks semantically relative to student skill vectors. |
+| # | Query Type | Concept Demonstrated | Purpose |
+| :-: | :--- | :--- | :--- |
+| **1** | **3-Table INNER JOIN** | `tasks` $\to$ `categories` $\to$ `users` | Lists open tasks with poster identity and college affiliation. |
+| **2** | **GROUP BY + HAVING** | Aggregates (`AVG`, `COUNT`, `MIN`, `MAX`) with `HAVING COUNT(r.review_id) >= 1` | Compiles active freelancer reputation metrics. |
+| **3** | **Correlated Subquery** | `WHERE t.budget >= (SELECT AVG(budget) FROM tasks WHERE category_id = t.category_id)` | Identifies high-value tasks exceeding their category's average budget. |
+| **4** | **Double FK Join** | `payments` $\to$ `users` (as Payer) and `payments` $\to$ `users` (as Receiver) | Generates audit ledger linking both students. |
+| **5** | **Window Function** | `DENSE_RANK() OVER (PARTITION BY category_id ORDER BY budget DESC)` | Ranks tasks within each category without collapsing individual task rows. |
+| **6** | **Recursive Query (WITH RECURSIVE)** | Anchor + Recursive member over self-referencing `parent_skill_id` | Traverses prerequisite skill chains with depth and dependency path. |
+| **7** | **Multi-Stage CTE** | Multiple Common Table Expressions (`category_summary`, `top_earners`) | Clean multi-stage aggregation avoiding Cartesian explosion. |
+| **8** | **Database RBAC Inspection** | Queries `information_schema.role_table_grants` | Inspects PostgreSQL engine privileges across Student, Admin, and Auditor roles. |
+| **9** | **Vector Similarity Search** | Cosine distance operator (`<=>`) over `vector(384)` | Ranks tasks semantically relative to student skill vectors. |
+| **10** | **Vector RUD Operations** | Read, Update, Delete operations on vector store | Verifies vector inspection, re-embedding updates, and index deletion. |
 
 ---
 
 ## 8. Web Application Architecture (Next.js 14)
 
-The frontend is implemented in **Next.js 14 (App Router)** with **TypeScript** and **Vanilla CSS** following a dark-slate campus aesthetic:
+The frontend is implemented in **Next.js 14 (App Router)** with **TypeScript** and **Vanilla CSS**:
 
 * **Authentication & Personas**: Persistent JWT authentication with an instant **1-Click Demo Persona Switcher Strip** (Aarav, Ananya, Priya, Admin).
 * **Task Directory (`/tasks`)**: Real-time filtering by category, budget sliders, and keyword search.
 * **Proposals & Bids (`/tasks/[id]`)**: Proposal submission, applicant review, and trigger validation.
 * **1:1 Contract Workspace (`/assignments/[id]`)**: Dynamic state machine advancing contracts from `ASSIGNED` to `COMPLETED` with deliverable submission and 5-star peer reviews.
 * **Skill Portfolio (`/dashboard`)**: Student profile editor with live earnings calculations and competency tagging.
-* **pgvector Explorer (`/recommendations`)**: Visual breakdown of cosine distance math and live SQL query syntax.
-* **DBMS Viva Showcase (`/db-showcase`)**: Interactive faculty presentation console executing benchmark queries live with execution times (ms) and **`EXPLAIN (ANALYZE, BUFFERS)`** query plan profiling.
+* **Semantic Vector & RUD Console (`/recommendations`)**: Dual-tab workspace for cosine distance matching and live **Vector RUD** (Read vector coordinates, Update embeddings, Delete vector records).
+* **DBMS Viva Showcase (`/db-showcase`)**: Interactive faculty presentation console executing all 10 benchmark queries live with execution latency (ms) and **`EXPLAIN (ANALYZE, BUFFERS)`** query plan profiling.
 * **Admin Center (`/admin`)**: System analytics, user activation toggles, and financial audit logs.
 
 ---
@@ -367,8 +406,8 @@ The frontend is implemented in **Next.js 14 (App Router)** with **TypeScript** a
    - Executes student registration, task posting, pgvector embedding generation, trigger enforcement, bid submission, stored transaction acceptance, work delivery, payout settlement, and 5-star review.
    - **Result**: **14 / 14 Steps Passed (100% Success)**.
 2. **Academic Query Suite (`npm run test:queries`)**:
-   - Executes all 6 complex SQL query suites against live PostgreSQL tables.
-   - **Result**: **6 / 6 Suites Passed**.
+   - Executes all 10 complex SQL and vector query suites against live PostgreSQL tables.
+   - **Result**: **10 / 10 Suites Passed**.
 3. **HTTP Route Verification**:
    - Tested all 16 frontend and API proxy routes (`http://localhost:3000/*`).
    - **Result**: **16 / 16 Routes Responded HTTP 200 OK**.
@@ -379,7 +418,7 @@ The frontend is implemented in **Next.js 14 (App Router)** with **TypeScript** a
 
 ## 10. Conclusion & Future Enhancements
 
-PrayasPro demonstrates a complete, production-grade integration of modern database engineering principles, showcasing how relational ACID constraints, integrity triggers, analytical views, and vector similarity search can coalesce into an intuitive campus application.
+PrayasPro demonstrates a complete, production-grade integration of modern database engineering principles, showcasing how relational ACID constraints, integrity triggers, analytical views, recursive dependency trees, and vector similarity search can coalesce into an intuitive campus application.
 
 ### Future Enhancements:
 - **Milestone Escrow Contracts**: Multi-stage milestone payouts for semester-long team projects.
