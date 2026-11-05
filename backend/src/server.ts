@@ -18,7 +18,7 @@ import dbShowcaseRoutes from './routes/dbShowcaseRoutes';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Enable Cross-Origin Resource Sharing & JSON Parsing
 app.use(cors({
