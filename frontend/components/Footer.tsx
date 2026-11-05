@@ -28,12 +28,12 @@ export default function Footer() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#ffffff',
-                fontWeight: 800,
+                fontWeight: 600,
                 fontSize: '13px'
               }}>
                 P
               </div>
-              <span style={{ fontSize: '17px', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-prominent)' }}>
+              <span style={{ fontSize: '16px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--text-prominent)' }}>
                 Prayas<span style={{ color: 'var(--brand-primary)' }}>Pro</span>
               </span>
             </div>
@@ -44,7 +44,7 @@ export default function Footer() {
 
           {/* Marketplace Links */}
           <div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '14px' }}>
               Marketplace
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -57,8 +57,8 @@ export default function Footer() {
 
           {/* Partner Campuses */}
           <div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Campus Network
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '14px' }}>
+              Campus network
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
               <li>PES University (RR & EC Campuses)</li>
@@ -70,7 +70,7 @@ export default function Footer() {
 
           {/* Resources & Academic Links */}
           <div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '14px' }}>
               Resources
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>

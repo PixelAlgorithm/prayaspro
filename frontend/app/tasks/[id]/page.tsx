@@ -17,9 +17,8 @@ import {
   ArrowLeft, 
   Send, 
   ShieldCheck, 
-  Sparkles,
-  ExternalLink,
-  MapPin,
+  ExternalLink, 
+  MapPin, 
   Trash2
 } from 'lucide-react';
 
@@ -102,7 +101,7 @@ export default function TaskDetailsPage() {
         }),
       });
 
-      setActionSuccess('Your proposal has been submitted to the task poster!');
+      setActionSuccess('Your proposal has been submitted to the task poster.');
       setProposalText('');
       loadTaskData();
     } catch (err: any) {
@@ -124,7 +123,7 @@ export default function TaskDetailsPage() {
         method: 'POST',
       });
       
-      setActionSuccess('Proposal accepted! Redirecting to the 1:1 contract workspace...');
+      setActionSuccess('Proposal accepted. Opening 1:1 contract workspace...');
       const asgId = res.assignment?.assignment_id || res.assignment_id;
       if (asgId) {
         router.push(`/assignments/${asgId}`);
@@ -282,17 +281,17 @@ export default function TaskDetailsPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <CheckCircle size={22} color="#059669" />
             <div>
-              <div style={{ fontSize: '15px', fontWeight: 700, color: '#065f46' }}>
-                You have been hired for this task!
+              <div style={{ fontSize: '15px', fontWeight: 600, color: '#065f46' }}>
+                You have been assigned to this task.
               </div>
               <div style={{ fontSize: '13px', color: '#047857' }}>
-                Open your 1:1 Contract Workspace to upload files, report milestone progress, and submit deliverables.
+                Open your 1:1 contract workspace to upload files, report milestone progress, and submit deliverables.
               </div>
             </div>
           </div>
           {task.assignment_id && (
             <Link href={`/assignments/${task.assignment_id}`} className="btn btn-primary btn-sm">
-              <span>Open Contract Workspace</span>
+              <span>Open contract workspace</span>
               <ExternalLink size={14} />
             </Link>
           )}
@@ -320,7 +319,7 @@ export default function TaskDetailsPage() {
               </span>
             </div>
 
-            <h1 style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '14px', lineHeight: 1.3 }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '14px', lineHeight: 1.3 }}>
               {task.title}
             </h1>
 
@@ -343,7 +342,7 @@ export default function TaskDetailsPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#ffffff',
-                fontWeight: 700,
+                fontWeight: 600,
                 fontSize: '14px'
               }}>
                 {task.owner_name?.charAt(0) || 'U'}
@@ -360,8 +359,8 @@ export default function TaskDetailsPage() {
 
             {/* Description */}
             <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Task Requirements & Scope
+              <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '8px' }}>
+                Task requirements and scope
               </h4>
               <p style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.65, whiteSpace: 'pre-line' }}>
                 {task.description}
@@ -371,8 +370,8 @@ export default function TaskDetailsPage() {
             {/* Required Skills */}
             {skillsList.length > 0 && (
               <div>
-                <h4 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  Required Skills
+                <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '8px' }}>
+                  Required skills
                 </h4>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {skillsList.map((skill: string, i: number) => (
@@ -427,19 +426,19 @@ export default function TaskDetailsPage() {
           <div className="card" style={{ padding: '24px', background: '#ffffff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
               <div>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  Allocated Stipend
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                  Allocated stipend
                 </div>
-                <div style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   ₹{formattedBudget}
                 </div>
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  Target Delivery
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                  Target delivery
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-prominent)', marginTop: '4px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-prominent)', marginTop: '4px' }}>
                   {deadlineDate}
                 </div>
               </div>
@@ -464,14 +463,14 @@ export default function TaskDetailsPage() {
           {isOwner ? (
             /* OWNER VIEW: Applications / Bids List */
             <div className="card" style={{ padding: '24px', background: '#ffffff' }}>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '14px', color: 'var(--text-prominent)' }}>
-                Applicant Proposals ({applications.length})
+              <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '14px', color: 'var(--text-prominent)' }}>
+                Applicant proposals ({applications.length})
               </h3>
 
               {task.assignment_id && (
                 <div style={{ marginBottom: '16px' }}>
                   <Link href={`/assignments/${task.assignment_id}`} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
-                    <span>Open 1:1 Contract Workspace</span>
+                    <span>Open 1:1 contract workspace</span>
                     <ExternalLink size={14} />
                   </Link>
                 </div>

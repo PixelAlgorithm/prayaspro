@@ -75,8 +75,8 @@ export default function TaskCard({ task }: { task: TaskItem }) {
 
           {/* Title */}
           <h3 style={{
-            fontSize: '16px',
-            fontWeight: 700,
+            fontSize: '15px',
+            fontWeight: 600,
             marginBottom: '6px',
             lineHeight: 1.35,
             color: 'var(--text-prominent)'
@@ -128,15 +128,15 @@ export default function TaskCard({ task }: { task: TaskItem }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '3px 8px',
+              padding: '2px 8px',
               background: '#eff6ff',
               borderRadius: '4px',
-              fontSize: '12px',
-              fontWeight: 600,
+              fontSize: '11px',
+              fontWeight: 500,
               color: 'var(--brand-primary)',
               marginBottom: '14px'
             }}>
-              <span>{task.match_score_percentage}% Skill Affinity</span>
+              <span>{task.match_score_percentage}% Skill match</span>
             </div>
           )}
         </div>
@@ -154,11 +154,12 @@ export default function TaskCard({ task }: { task: TaskItem }) {
               Stipend
             </div>
             <div style={{
-              fontSize: '17px',
-              fontWeight: 800,
+              fontSize: '16px',
+              fontWeight: 600,
               color: 'var(--text-prominent)',
-              letterSpacing: '-0.02em',
-              fontFamily: 'var(--font-mono)'
+              letterSpacing: '-0.01em',
+              fontFamily: 'var(--font-mono)',
+              fontVariantNumeric: 'tabular-nums'
             }}>
               ₹{formattedBudget}
             </div>

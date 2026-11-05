@@ -75,8 +75,8 @@ export default function MyApplicationsPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-            My Proposals & Bids
+          <h1 style={{ fontSize: '26px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+            My proposals and bids
           </h1>
           <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
             Track the status of your micro-task proposals, bids, and active contract workspaces.
@@ -85,7 +85,7 @@ export default function MyApplicationsPage() {
 
         <Link href="/tasks" className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <Briefcase size={15} />
-          <span>Browse Open Tasks</span>
+          <span>Browse open tasks</span>
         </Link>
       </div>
 
@@ -130,8 +130,7 @@ export default function MyApplicationsPage() {
                 style={{ 
                   padding: '24px',
                   background: '#ffffff',
-                  borderColor: isAccepted ? '#86efac' : undefined,
-                  boxShadow: isAccepted ? '0 4px 12px rgba(16, 185, 129, 0.08)' : undefined
+                  borderColor: isAccepted ? 'var(--border-medium)' : undefined,
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px', marginBottom: '14px', flexWrap: 'wrap' }}>
@@ -144,14 +143,14 @@ export default function MyApplicationsPage() {
                         appStatus === 'PENDING' ? 'badge-primary' :
                         appStatus === 'ACCEPTED' ? 'badge-success' : 'badge-danger'
                       }`}>
-                        {isAccepted ? 'HIRED / ACCEPTED' : appStatus}
+                        {isAccepted ? 'Hired' : appStatus === 'PENDING' ? 'Pending' : appStatus}
                       </span>
                       <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                        Task Status: <strong>{app.task_status}</strong>
+                        Task status: <strong>{app.task_status}</strong>
                       </span>
                     </div>
 
-                    <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-prominent)', margin: '0 0 4px 0' }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', margin: '0 0 4px 0' }}>
                       <Link href={`/tasks/${app.task_id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         {app.task_title}
                       </Link>
@@ -163,12 +162,12 @@ export default function MyApplicationsPage() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Your Bid</span>
-                    <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Your bid</span>
+                    <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                       ₹{Number(app.proposed_amount).toLocaleString('en-IN')}
                     </div>
                     <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                      Original Budget: ₹{Number(app.task_budget).toLocaleString('en-IN')}
+                      Original budget: ₹{Number(app.task_budget).toLocaleString('en-IN')}
                     </div>
                   </div>
                 </div>
@@ -183,7 +182,7 @@ export default function MyApplicationsPage() {
                   lineHeight: 1.55,
                   marginBottom: '16px'
                 }}>
-                  <span style={{ fontWeight: 600, color: 'var(--text-secondary)', marginRight: '6px' }}>Your Pitch:</span>
+                  <span style={{ fontWeight: 500, color: 'var(--text-secondary)', marginRight: '6px' }}>Your pitch:</span>
                   {app.proposal}
                 </div>
 
@@ -201,18 +200,18 @@ export default function MyApplicationsPage() {
                         className="btn btn-outline btn-sm"
                         style={{ color: 'var(--accent-danger)', borderColor: '#fecaca' }}
                       >
-                        <span>{withdrawingId === app.application_id ? 'Withdrawing...' : 'Withdraw Bid'}</span>
+                        <span>{withdrawingId === app.application_id ? 'Withdrawing...' : 'Withdraw bid'}</span>
                       </button>
                     )}
 
                     <Link href={`/tasks/${app.task_id}`} className="btn btn-outline btn-sm">
-                      <span>View Task</span>
+                      <span>View task</span>
                       <ArrowRight size={13} />
                     </Link>
 
                     {isAccepted && app.assignment_id && (
                       <Link href={`/assignments/${app.assignment_id}`} className="btn btn-primary btn-sm">
-                        <span>Open Workspace & Submit</span>
+                        <span>Open workspace</span>
                         <ExternalLink size={13} />
                       </Link>
                     )}

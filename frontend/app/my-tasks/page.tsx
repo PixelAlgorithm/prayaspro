@@ -81,8 +81,8 @@ export default function MyTasksPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-            My Published Tasks
+          <h1 style={{ fontSize: '26px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+            My published tasks
           </h1>
           <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
             Manage the micro-tasks you have published to the student network and review applicant proposals.
@@ -91,7 +91,7 @@ export default function MyTasksPage() {
 
         <Link href="/tasks/create" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <PlusCircle size={15} />
-          <span>Post New Task</span>
+          <span>Post a task</span>
         </Link>
       </div>
 
@@ -105,9 +105,9 @@ export default function MyTasksPage() {
         overflowX: 'auto'
       }}>
         {[
-          { key: 'ALL', label: 'All Tasks', count: tasks.length },
-          { key: 'OPEN', label: 'Open for Bids', count: tasks.filter(t => t.status === 'OPEN').length },
-          { key: 'ACTIVE', label: 'In Progress', count: tasks.filter(t => ['ASSIGNED', 'IN_PROGRESS'].includes(t.status)).length },
+          { key: 'ALL', label: 'All tasks', count: tasks.length },
+          { key: 'OPEN', label: 'Open for bids', count: tasks.filter(t => t.status === 'OPEN').length },
+          { key: 'ACTIVE', label: 'In progress', count: tasks.filter(t => ['ASSIGNED', 'IN_PROGRESS'].includes(t.status)).length },
           { key: 'COMPLETED', label: 'Completed', count: tasks.filter(t => t.status === 'COMPLETED').length },
         ].map((tab) => {
           const isActive = filterStatus === tab.key;
@@ -122,7 +122,7 @@ export default function MyTasksPage() {
                 padding: '8px 14px',
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '13px',
-                fontWeight: 600,
+                fontWeight: 500,
                 background: isActive ? '#eff6ff' : 'transparent',
                 color: isActive ? 'var(--brand-primary)' : 'var(--text-secondary)',
                 border: isActive ? '1px solid #bfdbfe' : '1px solid transparent',
@@ -134,7 +134,7 @@ export default function MyTasksPage() {
               <span style={{
                 fontSize: '11px',
                 padding: '1px 6px',
-                borderRadius: '10px',
+                borderRadius: 'var(--radius-xs)',
                 background: isActive ? 'var(--brand-primary)' : 'var(--border-subtle)',
                 color: isActive ? '#ffffff' : 'var(--text-muted)'
               }}>
@@ -199,7 +199,7 @@ export default function MyTasksPage() {
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '8px', lineHeight: 1.35 }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '8px', lineHeight: 1.35 }}>
                   <Link href={`/tasks/${task.task_id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                     {task.title}
                   </Link>
@@ -225,7 +225,7 @@ export default function MyTasksPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <div>
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Stipend</span>
-                    <div style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                       ₹{Number(task.budget).toLocaleString('en-IN')}
                     </div>
                   </div>
@@ -241,7 +241,7 @@ export default function MyTasksPage() {
                     className="btn btn-outline btn-sm"
                     style={{ flex: 1, justifyContent: 'center' }}
                   >
-                    <span>View Proposals</span>
+                    <span>View proposals</span>
                     <ArrowRight size={13} />
                   </Link>
 

@@ -14,7 +14,6 @@ import {
   PlusCircle, 
   Trash2, 
   Briefcase, 
-  Sparkles, 
   Layers, 
   FileText,
   AlertCircle,
@@ -152,23 +151,23 @@ export default function DashboardPage() {
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{
-              width: '56px',
-              height: '56px',
+              width: '52px',
+              height: '52px',
               borderRadius: '50%',
               background: '#eff6ff',
               color: 'var(--brand-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '20px'
+              fontWeight: 600,
+              fontSize: '18px'
             }}>
               {user.name.charAt(0)}
             </div>
 
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-prominent)', margin: 0 }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 600, color: 'var(--text-prominent)', margin: 0 }}>
                   {user.name}
                 </h1>
                 <span className="badge badge-primary" style={{ fontSize: '11px' }}>
@@ -185,22 +184,22 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Reputation</div>
-              <div style={{ fontSize: '20px', fontWeight: 800, color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                <Star size={16} fill="#f59e0b" />
+              <div style={{ fontSize: '18px', fontWeight: 600, color: '#d97706', display: 'flex', alignItems: 'center', gap: '3px', fontVariantNumeric: 'tabular-nums' }}>
+                <Star size={15} fill="#d97706" />
                 <span>{repScore}</span>
               </div>
             </div>
 
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Earnings</div>
-              <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                 ₹{Number(user.total_earnings || 0).toLocaleString('en-IN')}
               </div>
             </div>
 
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Completed</div>
-              <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                 {user.tasks_completed || 0}
               </div>
             </div>
@@ -219,15 +218,15 @@ export default function DashboardPage() {
         }}>
           <Link href="/my-tasks" className="btn btn-outline btn-sm">
             <Layers size={14} />
-            <span>My Published Tasks</span>
+            <span>My published tasks</span>
           </Link>
           <Link href="/my-applications" className="btn btn-outline btn-sm">
             <FileText size={14} />
-            <span>My Proposals & Bids</span>
+            <span>My proposals and bids</span>
           </Link>
           <Link href="/tasks/create" className="btn btn-primary btn-sm">
             <PlusCircle size={14} />
-            <span>Post New Task</span>
+            <span>Post a task</span>
           </Link>
         </div>
       </div>
@@ -237,8 +236,8 @@ export default function DashboardPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-prominent)', margin: 0 }}>
-                Active Contracts & Deliverables
+              <h2 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-prominent)', margin: 0 }}>
+                Active contracts and deliverables
               </h2>
               <span className="badge badge-primary" style={{ fontSize: '11px' }}>
                 {assignedContracts.length} Assigned
@@ -344,13 +343,13 @@ export default function DashboardPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' }}>
                     <div>
                       <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Stipend</span>
-                      <div style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                         ₹{Number(c.task_budget).toLocaleString('en-IN')}
                       </div>
                     </div>
 
                     <Link href={`/assignments/${c.assignment_id}`} className="btn btn-primary btn-sm">
-                      <span>Open Workspace</span>
+                      <span>Open workspace</span>
                       <ExternalLink size={13} />
                     </Link>
                   </div>
@@ -371,8 +370,8 @@ export default function DashboardPage() {
         
         {/* Left Column: Verified Skills Portfolio */}
         <div className="card" style={{ padding: '24px', background: '#ffffff' }}>
-          <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '14px' }}>
-            Verified Skills Portfolio
+          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '14px' }}>
+            Verified skills portfolio
           </h3>
 
           {skillMsg && (
@@ -428,8 +427,8 @@ export default function DashboardPage() {
             borderRadius: 'var(--radius-sm)',
             border: '1px solid var(--border-subtle)'
           }}>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '10px' }}>
-              + Add Skill to Profile
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '10px' }}>
+              Add skill to profile
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '10px', marginBottom: '12px' }}>
@@ -464,7 +463,7 @@ export default function DashboardPage() {
               className="btn btn-primary btn-sm"
               style={{ width: '100%', justifyContent: 'center' }}
             >
-              {addingSkill ? 'Saving...' : 'Add Skill'}
+              {addingSkill ? 'Saving...' : 'Add skill'}
             </button>
           </form>
         </div>
@@ -472,11 +471,11 @@ export default function DashboardPage() {
         {/* Right Column: Recommendations Feed */}
         <div className="card" style={{ padding: '24px', background: '#ffffff' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-prominent)', margin: 0 }}>
-              Recommended for You
+            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', margin: 0 }}>
+              Recommended for you
             </h3>
-            <Link href="/recommendations" style={{ fontSize: '12px', color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 600 }}>
-              View All Matches →
+            <Link href="/recommendations" style={{ fontSize: '12px', color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 500 }}>
+              View all matches →
             </Link>
           </div>
 
@@ -486,7 +485,7 @@ export default function DashboardPage() {
             </div>
           ) : recommendations.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--text-muted)', fontSize: '13px' }}>
-              No matches found. Add more skills to your profile to get personalized recommendations!
+              No matches found. Add more skills to your profile to get personalized recommendations.
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -498,10 +497,10 @@ export default function DashboardPage() {
                   background: 'var(--canvas-base)'
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
-                    <Link href={`/tasks/${rec.task_id}`} style={{ fontWeight: 700, color: 'var(--text-prominent)', fontSize: '14px', textDecoration: 'none' }}>
+                    <Link href={`/tasks/${rec.task_id}`} style={{ fontWeight: 600, color: 'var(--text-prominent)', fontSize: '14px', textDecoration: 'none' }}>
                       {rec.title}
                     </Link>
-                    <span style={{ fontSize: '14px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                       ₹{Number(rec.budget).toLocaleString('en-IN')}
                     </span>
                   </div>
@@ -511,7 +510,7 @@ export default function DashboardPage() {
                       {rec.category_name} • By {rec.owner_name}
                     </span>
                     <Link href={`/tasks/${rec.task_id}`} className="btn btn-outline btn-sm" style={{ padding: '3px 8px', fontSize: '11px' }}>
-                      View Task
+                      View task
                     </Link>
                   </div>
                 </div>

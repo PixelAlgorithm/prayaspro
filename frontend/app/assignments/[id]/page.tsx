@@ -22,7 +22,6 @@ import {
   Sliders,
   RotateCcw
 } from 'lucide-react';
-import { triggerTaskCompletionConfetti } from '@/components/motion/Confetti';
 
 export default function AssignmentWorkspacePage() {
   const params = useParams();
@@ -106,7 +105,7 @@ export default function AssignmentWorkspacePage() {
           notes: workNotes
         })
       });
-      setActionSuccess('Deliverables submitted! Client has been notified for final review.');
+      setActionSuccess('Deliverables submitted. Client has been notified for final review.');
       await loadAssignment();
     } catch (err: any) {
       setError(err.message || 'Failed to submit deliverables.');
@@ -152,10 +151,7 @@ export default function AssignmentWorkspacePage() {
       await apiRequest(`/assignments/${assignmentId}/complete`, {
         method: 'POST'
       });
-      setActionSuccess('Contract completed! Payout has been released.');
-      
-      // Fire celebration confetti!
-      triggerTaskCompletionConfetti();
+      setActionSuccess('Contract completed. Payout has been released.');
       
       await loadAssignment();
     } catch (err: any) {
@@ -307,7 +303,7 @@ export default function AssignmentWorkspacePage() {
             <span className="badge badge-primary" style={{ fontSize: '12px' }}>
               {status.replace('_', ' ')}
             </span>
-            <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
               ₹{formattedBudget}
             </div>
           </div>
@@ -322,23 +318,23 @@ export default function AssignmentWorkspacePage() {
           borderTop: '1px solid var(--border-subtle)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#eff6ff', color: 'var(--brand-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#eff6ff', color: 'var(--brand-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600 }}>
               {posterName.charAt(0)}
             </div>
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>CLIENT (POSTER)</div>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-prominent)' }}>{posterName}</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Client (poster)</div>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-prominent)' }}>{posterName}</div>
               <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{posterCollege}</div>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ecfdf5', color: 'var(--brand-emerald)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ecfdf5', color: 'var(--brand-emerald)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600 }}>
               {workerName.charAt(0)}
             </div>
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>SPECIALIST (WORKER)</div>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-prominent)' }}>{workerName}</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Specialist (worker)</div>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-prominent)' }}>{workerName}</div>
               <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{workerCollege}</div>
             </div>
           </div>
@@ -347,8 +343,8 @@ export default function AssignmentWorkspacePage() {
 
       {/* 2. 4-Step Milestone Pipeline */}
       <div className="card" style={{ padding: '24px', background: '#ffffff', marginBottom: '24px' }}>
-        <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '14px' }}>
-          Contract Lifecycle
+        <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Contract lifecycle
         </div>
 
         <div style={{
@@ -357,10 +353,10 @@ export default function AssignmentWorkspacePage() {
           gap: '12px'
         }}>
           {[
-            { num: 1, title: 'Contract Initiated', desc: 'Agreed terms & scope' },
-            { num: 2, title: 'In Progress', desc: 'Active execution' },
+            { num: 1, title: 'Contract initiated', desc: 'Agreed terms & scope' },
+            { num: 2, title: 'In progress', desc: 'Active execution' },
             { num: 3, title: 'Submitted', desc: 'Pending client review' },
-            { num: 4, title: 'Settled & Paid', desc: 'Deliverables verified' },
+            { num: 4, title: 'Settled & paid', desc: 'Deliverables verified' },
           ].map((step) => {
             const isCompleted = stepIndex >= step.num;
             const isCurrent = stepIndex === step.num;
@@ -385,11 +381,11 @@ export default function AssignmentWorkspacePage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '11px',
-                    fontWeight: 700
+                    fontWeight: 600
                   }}>
                     {isCompleted ? '✓' : step.num}
                   </span>
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-prominent)' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)' }}>
                     {step.title}
                   </span>
                 </div>
@@ -413,10 +409,10 @@ export default function AssignmentWorkspacePage() {
         {/* Left Column: Progress Slider & Deliverable Submission */}
         <div className="card" style={{ padding: '24px', background: '#ffffff' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-prominent)', margin: 0 }}>
-              Milestone Progress
+            <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-prominent)', margin: 0 }}>
+              Milestone progress
             </h3>
-            <span style={{ fontSize: '18px', fontWeight: 800, color: 'var(--brand-primary)', fontFamily: 'var(--font-mono)' }}>
+            <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--brand-primary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
               {currentProgress}%
             </span>
           </div>

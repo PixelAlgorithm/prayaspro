@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/authContext';
 import { apiRequest } from '@/lib/api';
 import { 
-  Sparkles, 
+  Compass, 
   ArrowRight, 
   IndianRupee, 
   Calendar, 
@@ -67,12 +67,12 @@ export default function RecommendationsPage() {
         gap: '16px'
       }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', background: '#eff6ff', color: 'var(--brand-primary)', borderRadius: 'var(--radius-pill)', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>
-            <Sparkles size={13} />
-            <span>AI Skill Matching</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', background: '#eff6ff', color: 'var(--brand-primary)', borderRadius: 'var(--radius-xs)', fontSize: '12px', fontWeight: 500, marginBottom: '8px' }}>
+            <Compass size={13} />
+            <span>Skill recommendations</span>
           </div>
-          <h1 style={{ fontSize: '30px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-            Personalized Task Matches
+          <h1 style={{ fontSize: '28px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+            Personalized task matches
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '640px', margin: 0 }}>
             Micro-tasks tailored specifically to your profile skills, academic background, and engineering interests.
@@ -82,7 +82,7 @@ export default function RecommendationsPage() {
         {user && (
           <Link href="/dashboard" className="btn btn-outline btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
             <UserCheck size={14} />
-            <span>Update My Skills</span>
+            <span>Update my skills</span>
           </Link>
         )}
       </div>
@@ -101,14 +101,14 @@ export default function RecommendationsPage() {
         boxShadow: 'var(--shadow-sm)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>Category:</span>
+          <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>Category:</span>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="form-control"
             style={{ width: 'auto', padding: '6px 12px', fontSize: '13px', height: '36px' }}
           >
-            <option value="">All Categories</option>
+            <option value="">All categories</option>
             {categories.map((c) => (
               <option key={c.category_id} value={c.category_id}>
                 {c.category_name}
@@ -118,14 +118,14 @@ export default function RecommendationsPage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>Min Stipend:</span>
+          <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>Min stipend:</span>
           <select
             value={minBudget}
             onChange={(e) => setMinBudget(e.target.value ? Number(e.target.value) : '')}
             className="form-control"
             style={{ width: 'auto', padding: '6px 12px', fontSize: '13px', height: '36px' }}
           >
-            <option value="">Any Amount</option>
+            <option value="">Any amount</option>
             <option value="500">₹500+</option>
             <option value="1000">₹1,000+</option>
             <option value="2500">₹2,500+</option>
@@ -191,18 +191,18 @@ export default function RecommendationsPage() {
                       {task.category_name}
                     </span>
                     <span style={{
-                      fontSize: '12px',
-                      fontWeight: 700,
+                      fontSize: '11px',
+                      fontWeight: 500,
                       color: 'var(--brand-primary)',
                       background: '#eff6ff',
                       padding: '2px 8px',
                       borderRadius: '4px'
                     }}>
-                      {matchScore}% Fit
+                      {matchScore}% fit
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '8px', lineHeight: 1.35 }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '8px', lineHeight: 1.35 }}>
                     <Link href={`/tasks/${task.task_id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                       {task.title}
                     </Link>
@@ -226,7 +226,7 @@ export default function RecommendationsPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                     <div>
                       <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Stipend</span>
-                      <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                      <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                         ₹{Number(task.budget).toLocaleString('en-IN')}
                       </div>
                     </div>
@@ -238,7 +238,7 @@ export default function RecommendationsPage() {
                   </div>
 
                   <Link href={`/tasks/${task.task_id}`} className="btn btn-outline btn-sm" style={{ width: '100%', justifyContent: 'center' }}>
-                    <span>Inspect Task & Submit Bid</span>
+                    <span>Inspect task</span>
                     <ArrowRight size={13} />
                   </Link>
                 </div>

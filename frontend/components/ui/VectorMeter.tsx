@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sparkles } from 'lucide-react';
+import { Sliders } from 'lucide-react';
 
 interface VectorMeterProps {
   matchPercentage: number | string;
@@ -13,12 +13,11 @@ interface VectorMeterProps {
 export default function VectorMeter({
   matchPercentage,
   cosineDistance,
-  label = 'pgvector Semantic Similarity',
+  label = 'pgvector semantic similarity',
   showFormula = false,
 }: VectorMeterProps) {
   const numericScore = Math.min(100, Math.max(0, Number(matchPercentage) || 0));
   
-  // Format distance cleanly if provided
   const formattedDistance = cosineDistance !== undefined 
     ? Number(cosineDistance).toFixed(4)
     : undefined;
@@ -26,9 +25,9 @@ export default function VectorMeter({
   return (
     <div style={{
       padding: '12px 14px',
-      borderRadius: '10px',
-      background: 'rgba(56, 189, 248, 0.05)',
-      border: '1px solid rgba(56, 189, 248, 0.2)',
+      borderRadius: 'var(--radius-sm)',
+      background: 'var(--canvas-subtle)',
+      border: '1px solid var(--border-subtle)',
       position: 'relative',
     }}>
       <div style={{
@@ -37,10 +36,10 @@ export default function VectorMeter({
         justifyContent: 'space-between',
         marginBottom: '8px',
         fontSize: '12px',
-        fontWeight: 600,
+        fontWeight: 500,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#38bdf8' }}>
-          <Sparkles size={14} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+          <Sliders size={13} color="var(--text-muted)" />
           <span>{label}</span>
         </div>
 
@@ -50,32 +49,31 @@ export default function VectorMeter({
               fontSize: '11px',
               color: 'var(--text-muted)',
               fontFamily: 'var(--font-mono)',
+              fontVariantNumeric: 'tabular-nums',
             }}>
               d: {formattedDistance}
             </span>
           )}
           <span style={{
-            fontSize: '13px',
-            fontWeight: 800,
-            color: '#ffffff',
+            fontSize: '12px',
+            fontWeight: 600,
+            color: 'var(--brand-primary)',
             fontFamily: 'var(--font-mono)',
+            fontVariantNumeric: 'tabular-nums',
           }}>
-            {numericScore}% Match
+            {numericScore}% match
           </span>
         </div>
       </div>
 
-      {/* Progress Track & Fill */}
-      <div className="match-bar" style={{ height: '7px', background: 'rgba(255, 255, 255, 0.08)' }}>
+      {/* Progress Track & Fill (Solid accent, no hue gradients) */}
+      <div style={{ height: '6px', background: 'var(--border-hairline)', borderRadius: '3px', overflow: 'hidden' }}>
         <div
-          className="match-bar-fill"
           style={{
+            height: '100%',
             width: `${numericScore}%`,
-            background: numericScore >= 70
-              ? 'linear-gradient(90deg, #10b981 0%, #38bdf8 100%)'
-              : numericScore >= 40
-              ? 'linear-gradient(90deg, #f59e0b 0%, #38bdf8 100%)'
-              : 'linear-gradient(90deg, #64748b 0%, #94a3b8 100%)',
+            background: numericScore >= 70 ? 'var(--brand-primary)' : 'var(--text-muted)',
+            transition: 'width 0.2s ease',
           }}
         />
       </div>
@@ -84,14 +82,14 @@ export default function VectorMeter({
         <div style={{
           marginTop: '8px',
           paddingTop: '6px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-          fontSize: '10px',
+          borderTop: '1px solid var(--border-subtle)',
+          fontSize: '11px',
           color: 'var(--text-muted)',
           fontFamily: 'var(--font-mono)',
           display: 'flex',
           justifyContent: 'space-between',
         }}>
-          <span>Metric: Cosine Distance (&lt;=&gt;)</span>
+          <span>Metric: Cosine distance (&lt;=&gt;)</span>
           <span>Score = (1.0 - d) × 100%</span>
         </div>
       )}

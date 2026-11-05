@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/authContext';
 import { 
   Briefcase, 
-  Sparkles, 
   User, 
   LogOut, 
   Layers, 
@@ -63,18 +62,18 @@ export default function Navbar() {
             <div style={{
               width: '32px',
               height: '32px',
-              borderRadius: '8px',
+              borderRadius: '6px',
               background: 'var(--brand-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              fontWeight: 800,
-              fontSize: '16px'
+              fontWeight: 600,
+              fontSize: '15px'
             }}>
               P
             </div>
-            <span style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-prominent)', letterSpacing: '-0.02em' }}>
+            <span style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-prominent)', letterSpacing: '-0.01em' }}>
               Prayas<span style={{ color: 'var(--brand-primary)' }}>Pro</span>
             </span>
           </Link>
@@ -133,8 +132,8 @@ export default function Navbar() {
                 padding: '6px',
                 zIndex: 200
               }}>
-                <div style={{ padding: '6px 10px', fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  1-Click Test Personas
+                <div style={{ padding: '6px 10px', fontSize: '12px', fontWeight: 500, color: 'var(--text-muted)' }}>
+                  Test personas
                 </div>
                 {demoPersonas.map((p) => (
                   <button
@@ -156,7 +155,7 @@ export default function Navbar() {
                       gap: '2px'
                     }}
                   >
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: user?.email === p.email ? 'var(--brand-primary)' : 'var(--text-primary)' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 500, color: user?.email === p.email ? 'var(--brand-primary)' : 'var(--text-primary)' }}>
                       {p.name}
                     </span>
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>

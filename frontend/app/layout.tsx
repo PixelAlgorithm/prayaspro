@@ -26,7 +26,6 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <div className="ambient-glow" />
           <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
             <Navbar />
             <main style={{ flex: 1 }}>

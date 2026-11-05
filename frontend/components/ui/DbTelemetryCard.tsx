@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Database, Terminal, Check, Copy, ChevronDown, ChevronUp, Cpu, ShieldCheck } from 'lucide-react';
+import { Database, Copy, Check, ChevronDown, ChevronUp, Clock } from 'lucide-react';
 
 interface DbTelemetryCardProps {
   title: string;
-  concept?: string; // e.g. "ACID Transaction (Row-Lock FOR UPDATE)", "pgvector Cosine Distance (<=>)"
-  vivaConcept?: string; // alias for concept
+  concept?: string;
+  vivaConcept?: string;
   sql: string;
   executionTimeMs?: number;
   rowCount?: number;
-  rowsAffected?: number; // alias for rowCount
+  rowsAffected?: number;
   defaultExpanded?: boolean;
   notes?: string;
 }
@@ -40,13 +40,13 @@ export default function DbTelemetryCard({
 
   return (
     <div style={{
-      background: 'rgba(8, 12, 20, 0.95)',
-      border: '1px solid rgba(56, 189, 248, 0.25)',
-      borderRadius: '12px',
+      background: '#ffffff',
+      border: '1px solid var(--border-subtle)',
+      borderRadius: 'var(--radius-md)',
       overflow: 'hidden',
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+      boxShadow: 'var(--shadow-sm)',
       margin: '16px 0',
-      transition: 'border-color 0.2s ease',
+      transition: 'border-color 0.15s ease',
     }}>
       {/* Header Bar */}
       <div 
@@ -56,8 +56,8 @@ export default function DbTelemetryCard({
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '12px 16px',
-          background: 'rgba(15, 23, 42, 0.6)',
-          borderBottom: expanded ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
+          background: 'var(--canvas-subtle)',
+          borderBottom: expanded ? '1px solid var(--border-subtle)' : 'none',
           cursor: 'pointer',
           userSelect: 'none',
         }}
@@ -66,30 +66,30 @@ export default function DbTelemetryCard({
           <div style={{
             width: '26px',
             height: '26px',
-            borderRadius: '6px',
-            background: 'rgba(56, 189, 248, 0.15)',
-            border: '1px solid rgba(56, 189, 248, 0.3)',
+            borderRadius: 'var(--radius-xs)',
+            background: 'var(--surface-raised)',
+            border: '1px solid var(--border-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#38bdf8',
+            color: 'var(--brand-primary)',
           }}>
-            <Database size={14} />
+            <Database size={13} />
           </div>
 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '13px', fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.01em' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)' }}>
                 {title}
               </span>
               <span style={{
-                fontSize: '10px',
-                fontWeight: 600,
-                color: '#38bdf8',
-                background: 'rgba(2, 132, 199, 0.18)',
+                fontSize: '11px',
+                fontWeight: 500,
+                color: 'var(--text-secondary)',
+                background: 'var(--surface-raised)',
                 padding: '2px 7px',
-                borderRadius: '4px',
-                border: '1px solid rgba(56, 189, 248, 0.25)',
+                borderRadius: 'var(--radius-xs)',
+                border: '1px solid var(--border-subtle)',
                 fontFamily: 'var(--font-mono)',
               }}>
                 {activeConcept}
@@ -101,16 +101,21 @@ export default function DbTelemetryCard({
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {executionTimeMs !== undefined && (
             <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
               fontSize: '11px',
-              fontWeight: 600,
-              color: '#34d399',
-              background: 'rgba(16, 185, 129, 0.12)',
+              fontWeight: 500,
+              color: 'var(--brand-emerald)',
+              background: '#ecfdf5',
               padding: '2px 8px',
-              borderRadius: '4px',
-              border: '1px solid rgba(16, 185, 129, 0.25)',
+              borderRadius: 'var(--radius-xs)',
+              border: '1px solid #a7f3d0',
               fontFamily: 'var(--font-mono)',
+              fontVariantNumeric: 'tabular-nums',
             }}>
-              ⚡ {executionTimeMs.toFixed(2)} ms
+              <Clock size={11} />
+              <span>{executionTimeMs.toFixed(2)} ms</span>
             </span>
           )}
 
@@ -119,6 +124,7 @@ export default function DbTelemetryCard({
               fontSize: '11px',
               color: 'var(--text-muted)',
               fontFamily: 'var(--font-mono)',
+              fontVariantNumeric: 'tabular-nums',
             }}>
               {activeRowCount} rows
             </span>
@@ -126,50 +132,50 @@ export default function DbTelemetryCard({
 
           <button
             onClick={handleCopy}
-            title="Copy SQL to Clipboard"
+            title="Copy SQL to clipboard"
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '5px',
+              background: 'var(--surface-raised)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: 'var(--radius-xs)',
               padding: '4px 8px',
               fontSize: '11px',
-              color: copied ? '#34d399' : 'var(--text-secondary)',
+              color: copied ? 'var(--brand-emerald)' : 'var(--text-secondary)',
               cursor: 'pointer',
             }}
           >
-            {copied ? <Check size={12} color="#34d399" /> : <Copy size={12} />}
+            {copied ? <Check size={12} /> : <Copy size={12} />}
             <span>{copied ? 'Copied' : 'SQL'}</span>
           </button>
 
-          {expanded ? <ChevronUp size={16} color="var(--text-muted)" /> : <ChevronDown size={16} color="var(--text-muted)" />}
+          {expanded ? <ChevronUp size={15} color="var(--text-muted)" /> : <ChevronDown size={15} color="var(--text-muted)" />}
         </div>
       </div>
 
-      {/* Expanded Code & Viva Notes Body */}
+      {/* Expanded Code & Notes Body */}
       {expanded && (
         <div style={{ padding: '16px' }}>
           {notes && (
             <p style={{
               fontSize: '12px',
-              color: '#94a3b8',
-              lineHeight: 1.6,
+              color: 'var(--text-secondary)',
+              lineHeight: 1.55,
               marginBottom: '12px',
               padding: '8px 12px',
-              background: 'rgba(255, 255, 255, 0.02)',
-              borderRadius: '6px',
-              borderLeft: '3px solid #38bdf8',
+              background: 'var(--canvas-subtle)',
+              borderRadius: 'var(--radius-xs)',
+              borderLeft: '2px solid var(--brand-primary)',
             }}>
               {notes}
             </p>
           )}
 
           <div style={{
-            background: '#04060a',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '8px',
+            background: '#0f172a',
+            border: '1px solid var(--border-medium)',
+            borderRadius: 'var(--radius-xs)',
             padding: '12px 14px',
             overflowX: 'auto',
           }}>

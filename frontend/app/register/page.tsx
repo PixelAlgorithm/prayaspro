@@ -42,22 +42,22 @@ export default function RegisterPage() {
       {/* Brand Header */}
       <div style={{ textAlign: 'center', marginBottom: '28px' }}>
         <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '10px',
+          width: '36px',
+          height: '36px',
+          borderRadius: 'var(--radius-sm)',
           background: 'var(--brand-primary)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#ffffff',
-          fontWeight: 800,
-          fontSize: '18px',
+          fontWeight: 600,
+          fontSize: '16px',
           marginBottom: '14px'
         }}>
           P
         </div>
-        <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-          Create Student Account
+        <h1 style={{ fontSize: '22px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+          Create student account
         </h1>
         <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
           Join the university campus micro-task network

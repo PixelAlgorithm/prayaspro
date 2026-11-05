@@ -6,7 +6,6 @@ import {
   Database, 
   Code2, 
   Clock, 
-  Sparkles, 
   CheckCircle, 
   ArrowRight,
   RefreshCw,
@@ -88,12 +87,12 @@ export default function DbShowcasePage() {
         gap: '16px'
       }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', background: '#eff6ff', color: 'var(--brand-primary)', borderRadius: 'var(--radius-pill)', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', background: '#eff6ff', color: 'var(--brand-primary)', borderRadius: 'var(--radius-xs)', fontSize: '12px', fontWeight: 500, marginBottom: '8px' }}>
             <Database size={13} />
-            <span>Academic Architecture</span>
+            <span>Academic architecture</span>
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '4px' }}>
-            Database Architecture & SQL Demonstrations
+          <h1 style={{ fontSize: '26px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '4px' }}>
+            Database architecture and SQL demonstrations
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '720px', margin: 0 }}>
             Technical demonstration interface for PostgreSQL relational queries, triggers, ACID transactions, analytical views, and pgvector cosine distance.
@@ -107,7 +106,7 @@ export default function DbShowcasePage() {
           style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
         >
           <RefreshCw size={13} />
-          <span>{refreshing ? 'Executing Queries...' : 'Re-Execute Queries'}</span>
+          <span>{refreshing ? 'Executing queries...' : 'Re-execute queries'}</span>
         </button>
       </div>
 
@@ -130,7 +129,7 @@ export default function DbShowcasePage() {
                 padding: '8px 14px',
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '13px',
-                fontWeight: 600,
+                fontWeight: 500,
                 color: isActive ? 'var(--brand-primary)' : 'var(--text-secondary)',
                 background: isActive ? '#eff6ff' : 'transparent',
                 border: isActive ? '1px solid #bfdbfe' : '1px solid transparent',
@@ -157,14 +156,15 @@ export default function DbShowcasePage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
               <div>
                 <span className="badge badge-primary" style={{ marginBottom: '6px' }}>{currentDemo.concept}</span>
-                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-prominent)', margin: 0 }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-prominent)', margin: 0 }}>
                   {currentDemo.title}
                 </h2>
               </div>
 
               {currentDemo.executionTimeMs && (
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--brand-emerald)', fontFamily: 'var(--font-mono)' }}>
-                  ⚡ {currentDemo.executionTimeMs.toFixed(2)} ms latency
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', fontWeight: 500, color: 'var(--brand-emerald)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
+                  <Clock size={12} />
+                  <span>{currentDemo.executionTimeMs.toFixed(2)} ms latency</span>
                 </span>
               )}
             </div>
@@ -181,8 +181,8 @@ export default function DbShowcasePage() {
               overflowX: 'auto',
               marginBottom: '20px'
             }}>
-              <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '8px', fontFamily: 'var(--font-mono)' }}>
-                SQL Definition
+              <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '8px', fontFamily: 'var(--font-mono)' }}>
+                SQL query definition
               </div>
               <pre style={{
                 margin: 0,
@@ -198,8 +198,8 @@ export default function DbShowcasePage() {
             {/* Results Table */}
             {currentDemo.result && Array.isArray(currentDemo.result) && currentDemo.result.length > 0 ? (
               <div>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '10px' }}>
-                  Execution Result ({currentDemo.result.length} rows)
+                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '10px' }}>
+                  Execution result ({currentDemo.result.length} rows)
                 </div>
                 <div style={{ overflowX: 'auto', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
@@ -235,8 +235,8 @@ export default function DbShowcasePage() {
 
           {/* Interactive EXPLAIN ANALYZE Planner */}
           <div className="card" style={{ padding: '24px', background: '#ffffff' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-              Query Cost Planner (EXPLAIN ANALYZE)
+            <h3 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+              Query cost planner (EXPLAIN ANALYZE)
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '14px' }}>
               Execute ad-hoc SELECT queries to inspect the PostgreSQL cost optimizer, index scans, and join strategies.
@@ -256,7 +256,7 @@ export default function DbShowcasePage() {
               style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '16px' }}
             >
               <Play size={13} />
-              <span>{analyzingPlan ? 'Analyzing Query...' : 'Run EXPLAIN ANALYZE'}</span>
+              <span>{analyzingPlan ? 'Analyzing query...' : 'Run query planner'}</span>
             </button>
 
             {explainPlan && (

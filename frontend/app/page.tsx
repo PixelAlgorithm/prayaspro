@@ -7,8 +7,7 @@ import {
   CheckCircle2, 
   Users, 
   Layers, 
-  Sparkles,
-  Calendar,
+  Calendar, 
   MapPin
 } from 'lucide-react';
 import TaskCard, { TaskItem } from '@/components/TaskCard';
@@ -59,22 +58,22 @@ export default async function HomePage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '4px 12px',
-                borderRadius: 'var(--radius-pill)',
+                padding: '3px 10px',
+                borderRadius: 'var(--radius-xs)',
                 background: '#eff6ff',
                 color: 'var(--brand-primary)',
                 fontSize: '12px',
-                fontWeight: 600,
+                fontWeight: 500,
                 marginBottom: '20px'
               }}>
-                <span>University Student Talent Network</span>
+                <span>University student talent network</span>
               </div>
 
               <h1 style={{
-                fontSize: '44px',
-                fontWeight: 800,
-                lineHeight: 1.15,
-                letterSpacing: '-0.03em',
+                fontSize: '38px',
+                fontWeight: 600,
+                lineHeight: 1.2,
+                letterSpacing: '-0.02em',
                 color: 'var(--text-prominent)',
                 marginBottom: '18px'
               }}>
@@ -82,7 +81,7 @@ export default async function HomePage() {
               </h1>
 
               <p style={{
-                fontSize: '16px',
+                fontSize: '15px',
                 color: 'var(--text-secondary)',
                 lineHeight: 1.6,
                 marginBottom: '28px',
@@ -137,14 +136,14 @@ export default async function HomePage() {
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '10px', color: 'var(--text-prominent)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '10px', color: 'var(--text-prominent)' }}>
                     {featuredTask.title}
                   </h3>
 
                   <p style={{ 
-                    fontSize: '14px', 
+                    fontSize: '13px', 
                     color: 'var(--text-secondary)', 
-                    lineHeight: 1.6, 
+                    lineHeight: 1.55, 
                     marginBottom: '20px',
                     display: '-webkit-box',
                     WebkitLineClamp: 3,
@@ -179,14 +178,14 @@ export default async function HomePage() {
                     borderTop: '1px solid var(--border-subtle)'
                   }}>
                     <div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Stipend</div>
-                      <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Stipend</div>
+                      <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                         ₹{Number(featuredTask.budget || 0).toLocaleString('en-IN')}
                       </div>
                     </div>
 
                     <Link href={`/tasks/${featuredTask.task_id}`} className="btn btn-primary btn-sm">
-                      <span>Inspect Task</span>
+                      <span>Inspect task</span>
                       <ArrowRight size={13} />
                     </Link>
                   </div>
@@ -201,15 +200,15 @@ export default async function HomePage() {
                   textAlign: 'center'
                 }}>
                   <Briefcase size={32} color="var(--text-muted)" style={{ margin: '0 auto 12px' }} />
-                  <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '8px', color: 'var(--text-prominent)' }}>
-                    Ready for the First Task
+                  <h3 style={{ fontSize: '17px', fontWeight: 600, marginBottom: '8px', color: 'var(--text-prominent)' }}>
+                    Ready for the first task
                   </h3>
-                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
                     Publish a micro-task on the student network to connect with skilled campus peers.
                   </p>
                   <Link href="/tasks/create" className="btn btn-primary btn-sm">
                     <PlusCircle size={14} />
-                    <span>Post a Task</span>
+                    <span>Post a task</span>
                   </Link>
                 </div>
               )}
@@ -221,7 +220,7 @@ export default async function HomePage() {
 
       {/* 2. Platform Summary Strip - Sourced directly from PostgreSQL */}
       {dbInfo && (
-        <section style={{ padding: '32px 0', background: 'var(--canvas-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
+        <section style={{ padding: '28px 0', background: 'var(--canvas-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="container">
             <div style={{
               display: 'grid',
@@ -230,38 +229,38 @@ export default async function HomePage() {
               textAlign: 'center'
             }}>
               <div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   {dbInfo.total_tasks || '0'}
                 </div>
                 <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                  Live Tasks in Database
+                  Live tasks in database
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   {dbInfo.total_users || '0'}
                 </div>
                 <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                  Registered Student Profiles
+                  Registered student profiles
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   {dbInfo.total_embeddings || '0'}
                 </div>
                 <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                  Semantic Embeddings Indexed
+                  Semantic embeddings indexed
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--brand-primary)', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '20px', fontWeight: 600, color: 'var(--brand-primary)', fontFamily: 'var(--font-mono)' }}>
                   Active
                 </div>
                 <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                  Campus Peer Marketplace
+                  Campus peer marketplace
                 </div>
               </div>
             </div>
@@ -270,57 +269,57 @@ export default async function HomePage() {
       )}
 
       {/* 3. The 4-Step Student Workflow */}
-      <section style={{ padding: '64px 0', background: '#ffffff', borderBottom: '1px solid var(--border-subtle)' }}>
+      <section style={{ padding: '56px 0', background: '#ffffff', borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="container">
-          <div style={{ marginBottom: '40px', maxWidth: '640px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              How PrayasPro Works
+          <div style={{ marginBottom: '36px', maxWidth: '640px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--brand-primary)' }}>
+              How PrayasPro works
             </span>
-            <h2 style={{ fontSize: '30px', fontWeight: 800, marginTop: '6px', color: 'var(--text-prominent)' }}>
+            <h2 style={{ fontSize: '26px', fontWeight: 600, marginTop: '6px', color: 'var(--text-prominent)' }}>
               From task posting to completed deliverable
             </h2>
-            <p style={{ marginTop: '8px', fontSize: '15px' }}>
-              A straightforward, transparent process designed around student schedules and academic milestones.
+            <p style={{ marginTop: '8px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+              A structured, transparent workflow aligned with campus timelines and project milestones.
             </p>
           </div>
 
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '24px'
+            gap: '20px'
           }}>
             {[
               {
                 step: '01',
-                title: 'Post Your Task',
-                desc: 'Describe what you need done, set your budget stipend, and define the delivery deadline.'
+                title: 'Post a task',
+                desc: 'Describe deliverables, set a clear stipend amount, and establish a deadline.'
               },
               {
                 step: '02',
-                title: 'Review Peer Bids',
+                title: 'Review peer bids',
                 desc: 'Students with matching skills submit proposals with estimated completion time and pitch.'
               },
               {
                 step: '03',
-                title: '1:1 Work Workspace',
-                desc: 'Once accepted, work together in a dedicated deal room with milestone progress tracking.'
+                title: '1:1 Contract workspace',
+                desc: 'Collaborate in a dedicated milestone workspace with progress and deliverable tracking.'
               },
               {
                 step: '04',
-                title: 'Deliver & Settle',
+                title: 'Deliver and settle',
                 desc: 'Review submitted project deliverables, complete payout settlement, and exchange ratings.'
               }
             ].map((item) => (
               <div key={item.step} style={{
-                padding: '24px',
+                padding: '20px',
                 borderLeft: '2px solid var(--brand-primary)',
                 background: 'var(--canvas-base)',
                 borderRadius: '0 var(--radius-sm) var(--radius-sm) 0'
               }}>
-                <div style={{ fontSize: '14px', fontWeight: 800, color: 'var(--brand-primary)', fontFamily: 'var(--font-mono)', marginBottom: '8px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--brand-primary)', fontFamily: 'var(--font-mono)', marginBottom: '8px' }}>
                   {item.step}
                 </div>
-                <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
                   {item.title}
                 </h3>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
@@ -333,24 +332,24 @@ export default async function HomePage() {
       </section>
 
       {/* 4. Latest Campus Tasks Grid */}
-      <section style={{ padding: '64px 0', background: 'var(--canvas-base)' }}>
+      <section style={{ padding: '56px 0', background: 'var(--canvas-base)' }}>
         <div className="container">
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
             <div>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Campus Marketplace
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--brand-primary)' }}>
+                Campus marketplace
               </span>
-              <h2 style={{ fontSize: '28px', fontWeight: 800, marginTop: '4px', color: 'var(--text-prominent)' }}>
-                Latest Micro-Tasks
+              <h2 style={{ fontSize: '24px', fontWeight: 600, marginTop: '4px', color: 'var(--text-prominent)' }}>
+                Latest micro-tasks
               </h2>
-              <p style={{ fontSize: '14px', marginTop: '4px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                 Open opportunities looking for skilled student collaborators.
               </p>
             </div>
 
             <Link href="/tasks" className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <span>View All Tasks</span>
+              <span>View all tasks</span>
               <ArrowRight size={14} />
             </Link>
           </div>

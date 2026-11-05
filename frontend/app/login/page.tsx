@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/authContext';
-import { ArrowRight, Lock, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, Lock, Mail } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -48,22 +48,22 @@ export default function LoginPage() {
       {/* Brand Header */}
       <div style={{ textAlign: 'center', marginBottom: '28px' }}>
         <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '10px',
+          width: '36px',
+          height: '36px',
+          borderRadius: 'var(--radius-sm)',
           background: 'var(--brand-primary)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: '#ffffff',
-          fontWeight: 800,
-          fontSize: '18px',
+          fontWeight: 600,
+          fontSize: '16px',
           marginBottom: '14px'
         }}>
           P
         </div>
-        <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-          Sign In to PrayasPro
+        <h1 style={{ fontSize: '22px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+          Sign in to PrayasPro
         </h1>
         <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
           Campus micro-task marketplace for university students
@@ -81,11 +81,11 @@ export default function LoginPage() {
           marginBottom: '24px'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              1-Click Demo Profiles
+            <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-secondary)' }}>
+              Demo profiles
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--brand-primary)', fontWeight: 600 }}>
-              Testing Presets
+            <span style={{ fontSize: '11px', color: 'var(--brand-primary)', fontWeight: 500 }}>
+              Testing presets
             </span>
           </div>
 

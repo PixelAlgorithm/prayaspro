@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/authContext';
 import TaskCard, { TaskItem } from '@/components/TaskCard';
-import { Search, Filter, Sparkles, PlusCircle, RotateCcw, Briefcase } from 'lucide-react';
+import { Search, Filter, SlidersHorizontal, PlusCircle, RotateCcw, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 
 export default function TasksPage() {
@@ -95,8 +95,8 @@ export default function TasksPage() {
         gap: '16px',
       }}>
         <div>
-          <h1 style={{ fontSize: '30px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-            Campus Task Marketplace
+          <h1 style={{ fontSize: '28px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+            Campus task marketplace
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '600px', margin: 0 }}>
             Discover student projects, technical assignments, and peer work opportunities across partner university departments.
@@ -105,7 +105,7 @@ export default function TasksPage() {
 
         <Link href="/tasks/create" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <PlusCircle size={15} />
-          <span>Post a Task</span>
+          <span>Post a task</span>
         </Link>
       </div>
 
@@ -124,11 +124,11 @@ export default function TasksPage() {
             <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
-              placeholder="Search by keywords, technical skills, or task title..."
+              placeholder="Search tasks by title, skill, or keyword"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="form-control"
-              style={{ paddingLeft: '36px', height: '42px' }}
+              style={{ paddingLeft: '36px', height: '40px' }}
             />
           </div>
           <button type="submit" className="btn btn-primary" style={{ padding: '0 20px' }}>
@@ -141,14 +141,14 @@ export default function TasksPage() {
           
           {/* Category Filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>Category:</span>
+            <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>Category:</span>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="form-control"
               style={{ width: 'auto', padding: '6px 12px', fontSize: '13px', height: '36px' }}
             >
-              <option value="">All Categories</option>
+              <option value="">All categories</option>
               {categories.map((c) => (
                 <option key={c.category_id} value={c.category_id}>
                   {c.category_name}
@@ -159,30 +159,30 @@ export default function TasksPage() {
 
           {/* Status Filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>Status:</span>
+            <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>Status:</span>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="form-control"
               style={{ width: 'auto', padding: '6px 12px', fontSize: '13px', height: '36px' }}
             >
-              <option value="OPEN">Open for Bids</option>
-              <option value="ALL">All Statuses</option>
-              <option value="ASSIGNED">In Progress</option>
+              <option value="OPEN">Open for bids</option>
+              <option value="ALL">All statuses</option>
+              <option value="ASSIGNED">In progress</option>
               <option value="COMPLETED">Completed</option>
             </select>
           </div>
 
           {/* Minimum Stipend */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>Min Stipend:</span>
+            <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)' }}>Min stipend:</span>
             <select
               value={minBudget}
               onChange={(e) => setMinBudget(Number(e.target.value))}
               className="form-control"
               style={{ width: 'auto', padding: '6px 12px', fontSize: '13px', height: '36px' }}
             >
-              <option value={0}>Any Amount</option>
+              <option value={0}>Any amount</option>
               <option value={500}>₹500+</option>
               <option value={1000}>₹1,000+</option>
               <option value={2000}>₹2,000+</option>
@@ -198,8 +198,8 @@ export default function TasksPage() {
               className={`btn ${useVectorMatch ? 'btn-primary' : 'btn-outline'} btn-sm`}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginLeft: 'auto' }}
             >
-              <Sparkles size={13} />
-              <span>{useVectorMatch ? 'Skill Match: Active' : 'Match My Skills'}</span>
+              <SlidersHorizontal size={13} />
+              <span>{useVectorMatch ? 'Skill match active' : 'Match my skills'}</span>
             </button>
           )}
 
@@ -215,7 +215,7 @@ export default function TasksPage() {
       ) : tasks.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '64px 20px', background: '#ffffff' }}>
           <Briefcase size={36} color="var(--text-muted)" style={{ margin: '0 auto 12px' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+          <h3 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
             No tasks found matching your filters
           </h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '400px', margin: '0 auto 20px' }}>
@@ -226,7 +226,7 @@ export default function TasksPage() {
             className="btn btn-outline btn-sm"
           >
             <RotateCcw size={13} style={{ marginRight: '6px' }} />
-            <span>Reset Filters</span>
+            <span>Reset filters</span>
           </button>
         </div>
       ) : (

@@ -11,8 +11,7 @@ import {
   AlertCircle, 
   IndianRupee, 
   Calendar, 
-  Check, 
-  Sparkles
+  Check
 } from 'lucide-react';
 
 export default function CreateTaskPage() {
@@ -132,8 +131,8 @@ export default function CreateTaskPage() {
       </Link>
 
       <div style={{ marginBottom: '28px' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '6px' }}>
-          Publish a Campus Micro-Task
+        <h1 style={{ fontSize: '26px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '6px' }}>
+          Publish a campus micro-task
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>
           Define the deliverables, stipend, and technical requirements for fellow campus students.
@@ -273,18 +272,18 @@ export default function CreateTaskPage() {
               type="submit"
               disabled={submitting}
               className="btn btn-primary"
-              style={{ width: '100%', padding: '12px', marginTop: '12px', justifyContent: 'center' }}
+              style={{ width: '100%', padding: '10px', marginTop: '12px', justifyContent: 'center' }}
             >
-              <PlusCircle size={16} />
-              <span>{submitting ? 'Publishing Task...' : 'Publish Micro-Task'}</span>
+              <PlusCircle size={15} />
+              <span>{submitting ? 'Publishing...' : 'Publish micro-task'}</span>
             </button>
           </form>
         </div>
 
         {/* Right Column: Live Card Preview */}
         <div>
-          <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
-            Live Student Card Preview
+          <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '10px' }}>
+            Live card preview
           </div>
 
           <div className="card" style={{ padding: '24px', background: '#ffffff', border: '1px solid var(--border-medium)' }}>
@@ -292,11 +291,11 @@ export default function CreateTaskPage() {
               <span className="badge badge-accent">
                 {categories.find(c => c.category_id === categoryId)?.category_name || 'Category'}
               </span>
-              <span className="badge badge-success">Open for Bids</span>
+              <span className="badge badge-success">Open for bids</span>
             </div>
 
-            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-prominent)', marginBottom: '8px' }}>
-              {title || 'Task Title Preview'}
+            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '8px' }}>
+              {title || 'Task title preview'}
             </h3>
 
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '16px' }}>
@@ -324,7 +323,7 @@ export default function CreateTaskPage() {
             }}>
               <div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Stipend</div>
-                <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   ₹{Number(budget || 0).toLocaleString('en-IN')}
                 </div>
               </div>

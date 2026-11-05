@@ -146,8 +146,8 @@ export default function AdminConsolePage() {
         gap: '16px',
       }}>
         <div>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-prominent)', marginBottom: '4px' }}>
-            Platform Operations & Administration
+          <h1 style={{ fontSize: '26px', fontWeight: 600, color: 'var(--text-prominent)', marginBottom: '4px' }}>
+            Platform operations and administration
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>
             Supervise user rosters, manage task listings, and audit settled campus transactions.
@@ -155,7 +155,7 @@ export default function AdminConsolePage() {
         </div>
 
         <button onClick={loadAdminData} className="btn btn-outline btn-sm">
-          Refresh Records
+          Refresh records
         </button>
       </div>
 
@@ -183,10 +183,10 @@ export default function AdminConsolePage() {
         overflowX: 'auto'
       }}>
         {[
-          { key: 'OVERVIEW', label: 'System Overview' },
-          { key: 'TASKS', label: `Task Listings (${tasksList.length})` },
-          { key: 'USERS', label: `Student Roster (${usersList.length})` },
-          { key: 'LEDGER', label: `Financial Ledger (${ledger.length})` },
+          { key: 'OVERVIEW', label: 'System overview' },
+          { key: 'TASKS', label: `Task listings (${tasksList.length})` },
+          { key: 'USERS', label: `Student roster (${usersList.length})` },
+          { key: 'LEDGER', label: `Financial ledger (${ledger.length})` },
         ].map((tab) => {
           const isActive = activeTab === tab.key;
           return (
@@ -197,7 +197,7 @@ export default function AdminConsolePage() {
                 padding: '8px 16px',
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '13px',
-                fontWeight: 600,
+                fontWeight: 500,
                 color: isActive ? 'var(--brand-primary)' : 'var(--text-secondary)',
                 background: isActive ? '#eff6ff' : 'transparent',
                 border: isActive ? '1px solid #bfdbfe' : '1px solid transparent',
@@ -227,8 +227,8 @@ export default function AdminConsolePage() {
             gap: '16px'
           }}>
             <div className="card" style={{ padding: '20px', background: '#ffffff' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>TOTAL REGISTERED STUDENTS</div>
-              <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Registered students</div>
+              <div style={{ fontSize: '22px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', marginTop: '4px' }}>
                 {stats?.metrics?.totalUsers || '0'}
               </div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
@@ -237,8 +237,8 @@ export default function AdminConsolePage() {
             </div>
 
             <div className="card" style={{ padding: '20px', background: '#ffffff' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>TOTAL TASKS PUBLISHED</div>
-              <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Tasks published</div>
+              <div style={{ fontSize: '22px', fontWeight: 600, color: 'var(--text-prominent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', marginTop: '4px' }}>
                 {stats?.metrics?.totalTasks || '0'}
               </div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
@@ -247,18 +247,18 @@ export default function AdminConsolePage() {
             </div>
 
             <div className="card" style={{ padding: '20px', background: '#ffffff' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>SETTLED STIPEND VOLUME</div>
-              <div style={{ fontSize: '26px', fontWeight: 800, color: 'var(--brand-emerald)', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Settled stipend volume</div>
+              <div style={{ fontSize: '22px', fontWeight: 600, color: 'var(--brand-emerald)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', marginTop: '4px' }}>
                 ₹{Number(stats?.metrics?.totalVolume || 0).toLocaleString('en-IN')}
               </div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                Disbursed to student freelancers
+                Disbursed to student specialists
               </div>
             </div>
 
             <div className="card" style={{ padding: '20px', background: '#ffffff' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>PLATFORM SYSTEM HEALTH</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--brand-primary)', marginTop: '6px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Platform status</div>
+              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--brand-primary)', marginTop: '6px' }}>
                 Operational
               </div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
