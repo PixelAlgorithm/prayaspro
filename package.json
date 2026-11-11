@@ -14,6 +14,7 @@
     "db:synthetic": "npm --prefix backend run db:synthetic",
     "db:reset": "npm --prefix backend run db:reset",
     "test:flow": "npm --prefix backend run test:flow",
-    "test:queries": "npm --prefix backend run test:queries"
+    "test:queries": "npm --prefix backend run test:queries",
+    "test:smoke": "node frontend/scripts/smoke-test.mjs"
   }
 }
