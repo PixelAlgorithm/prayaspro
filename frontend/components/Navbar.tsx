@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/authContext';
@@ -23,6 +23,24 @@ export default function Navbar() {
   const { user, logout, quickLogin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [personaMenuOpen, setPersonaMenuOpen] = useState(false);
+  const [dbInfo, setDbInfo] = useState<{ status: string; database?: string; total_tasks?: string } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/health')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 'UP') {
+          setDbInfo({
+            status: 'UP',
+            database: data.database?.database || 'prayaspro',
+            total_tasks: data.database?.total_tasks || '0',
+          });
+        }
+      })
+      .catch(() => {
+        setDbInfo({ status: 'OFFLINE' });
+      });
+  }, []);
 
   const navLinks = [
     { href: '/tasks', label: 'Explore Tasks' },
@@ -107,6 +125,31 @@ export default function Navbar() {
         {/* Right Section: Persona Switcher & Auth */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           
+          {/* Live DB Health Badge */}
+          <div 
+            style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '6px', 
+              fontSize: '11px', 
+              fontWeight: 500,
+              padding: '4px 8px', 
+              borderRadius: '9999px',
+              background: dbInfo?.status === 'UP' ? '#ecfdf5' : '#fef2f2',
+              color: dbInfo?.status === 'UP' ? '#047857' : '#b91c1c',
+              border: `1px solid ${dbInfo?.status === 'UP' ? '#a7f3d0' : '#fecaca'}`,
+            }}
+            title={dbInfo?.status === 'UP' ? `Connected to ${dbInfo.database} (${dbInfo.total_tasks} active tasks)` : 'Connecting to database...'}
+          >
+            <span style={{ 
+              width: '6px', 
+              height: '6px', 
+              borderRadius: '50%', 
+              background: dbInfo?.status === 'UP' ? '#10b981' : '#ef4444' 
+            }} />
+            <span>{dbInfo?.status === 'UP' ? 'PostgreSQL 18' : 'DB Offline'}</span>
+          </div>
+
           {/* Quick Persona Switcher */}
           <div style={{ position: 'relative' }}>
             <button
