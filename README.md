@@ -55,12 +55,12 @@ Prayaspro/
 - PostgreSQL 18 running on `localhost:5432` with database `prayaspro` (`postgres:root`)
 - Node.js v18+
 
-### 1. Backend Server (Port 5000)
+### 1. Backend Server (Port 5001)
 ```bash
 cd backend
 npm install
-npm run db:reset       # Runs migrations 001-004 and populates synthetic campus data
-npm run dev            # Starts REST API daemon on http://localhost:5000
+npm run db:reset       # Runs migrations 001-007 and populates synthetic campus data
+npm run dev            # Starts REST API daemon on http://localhost:5001
 ```
 
 ### 2. Frontend Application (Port 3000)
@@ -68,6 +68,13 @@ npm run dev            # Starts REST API daemon on http://localhost:5000
 cd frontend
 npm install
 npm run dev            # Starts Next.js on http://localhost:3000
+```
+
+### 3. Automated System Tests
+```bash
+npm run test:smoke      # Verifies frontend API integration & health endpoints
+npm run test:flow       # 14-step automated lifecycle transaction test
+npm run test:queries    # Executes & profiles all 10 Level 3 SQL benchmark queries
 ```
 
 Open `http://localhost:3000` in any web browser!
