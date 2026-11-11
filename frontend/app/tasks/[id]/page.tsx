@@ -88,6 +88,17 @@ export default function TaskDetailsPage() {
       return;
     }
 
+    const numBid = Number(bidAmount);
+    if (isNaN(numBid) || numBid <= 0) {
+      setError('Please enter a valid bid amount greater than ₹0.');
+      return;
+    }
+
+    if (!proposalText || proposalText.trim().length < 10) {
+      setError('Please provide at least 10 characters in your pitch explaining how you will complete this task.');
+      return;
+    }
+
     setSubmittingProposal(true);
     setError(null);
     setActionSuccess(null);

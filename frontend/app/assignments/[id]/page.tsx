@@ -96,6 +96,10 @@ export default function AssignmentWorkspacePage() {
   // Submit deliverables
   async function handleSubmitDeliverable(e: React.FormEvent) {
     e.preventDefault();
+    if (!workNotes || workNotes.trim().length < 5) {
+      setError('Please provide deliverable details (such as a GitHub PR link or summary of work completed).');
+      return;
+    }
     setSubmittingDeliverable(true);
     setError(null);
     try {
