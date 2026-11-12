@@ -82,10 +82,11 @@ export async function startServer() {
     process.exit(1);
   }
 
-  const server = app.listen(PORT, () => {
+  const server = app.listen(Number(PORT), '0.0.0.0', () => {
     console.log('====================================================');
     console.log(`  PRAYASPRO BACKEND SERVER RUNNING ON PORT ${PORT} `);
-    console.log(`  API Base: http://localhost:${PORT}/api            `);
+    console.log(`  Local: http://localhost:${PORT}/api             `);
+    console.log(`  Network: http://0.0.0.0:${PORT}/api             `);
     console.log(`  Health Check: http://localhost:${PORT}/api/health `);
     console.log(`  Database: PostgreSQL 18 + pgvector               `);
     console.log('====================================================');
