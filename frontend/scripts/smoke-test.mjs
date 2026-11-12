@@ -55,13 +55,13 @@ async function runSmokeTests() {
   // 4. Quick login authentication
   let token = null;
   await test('Quick persona login generates valid JWT bearer token', async () => {
-    const res = await request('/auth/quick-login', {
+    const res = await request('/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'aarav@pesu.edu' })
+      body: JSON.stringify({ email: 'aarav@pesu.edu', password: 'password123' })
     });
     if (!res.ok || !res.data.token) {
-      throw new Error('Failed to authenticate persona');
+      throw new Error(`Failed to authenticate persona: ${res.data?.error || res.status}`);
     }
     token = res.data.token;
   });
@@ -69,11 +69,11 @@ async function runSmokeTests() {
   // 5. Authenticated profile access
   await test('Authenticated profile access verifies JWT claims', async () => {
     if (!token) throw new Error('Token unavailable');
-    const res = await request('/users/me', {
+    const res = await request('/auth/me', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (!res.ok || !res.data.user_id) {
-      throw new Error('User profile rejected token');
+    if (!res.ok || (!res.data.user_id && !res.data.id)) {
+      throw new Error(`User profile rejected token: ${JSON.stringify(res.data)}`);
     }
   });
 
@@ -90,3 +90,4 @@ runSmokeTests().catch((err) => {
   console.error('Fatal test error:', err);
   process.exit(1);
 });
+
